@@ -261,6 +261,7 @@ _{Explain here how the data archiving feature will be implemented}_
 ### Product scope
 
 **Target user profile**:
+
 * is a NUS computer science teaching assistant managing multiple tutorial classes
 * needs to organize and track contacts across distinct academic roles (students, professors, fellow TAs, course admins)
 * requires the ability to categorize and quickly retrieve contacts using specific tags (e.g., by tutorial group)
