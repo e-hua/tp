@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
-import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.InvalidIndexMessages;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
@@ -16,23 +16,32 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 /**
- * Contains utility methods used for parsing strings in the various *Parser classes.
+ * Contains utility methods used for parsing strings in the various *Parser
+ * classes.
  */
 public class ParserUtil {
 
-    public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
-
     /**
-     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
-     * trimmed.
-     * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
+     * Parses {@code oneBasedIndex} into an {@code Index} and returns it.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the input is invalid, (empty, contains multiple
+     *                        indices, non-numeric, non-integer, zero, or negative)
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
-        String trimmedIndex = oneBasedIndex.trim();
-        if (!StringUtil.isNonZeroUnsignedInteger(trimmedIndex)) {
-            throw new ParseException(MESSAGE_INVALID_INDEX);
-        }
-        return Index.fromOneBased(Integer.parseInt(trimmedIndex));
+        String trimmedIndexString = oneBasedIndex.trim();
+
+        checkMissingIndex(trimmedIndexString);
+        checkMultipleIndices(trimmedIndexString);
+        checkNonInteger(trimmedIndexString);
+        checkNonNumeric(trimmedIndexString);
+
+        int indexValue = Integer.parseInt(trimmedIndexString);
+
+        checkZeroIndex(indexValue);
+        checkNegativeIndex(indexValue);
+
+        return Index.fromOneBased(indexValue);
     }
 
     /**
@@ -121,4 +130,78 @@ public class ParserUtil {
         }
         return tagSet;
     }
+
+    /**
+    * Checks if the index string is empty.
+    *
+    * @param input the trimmed index string
+    * @throws ParseException if index is missing
+    */
+    private static void checkMissingIndex(String input) throws ParseException {
+        if (input.isEmpty()) {
+            throw new ParseException(InvalidIndexMessages.MESSAGE_MISSING_INDEX);
+        }
+    }
+
+    /**
+    * Checks if the index string contains more than one index separated by whitespace.
+    *
+    * @param input the trimmed index string
+    * @throws ParseException if multiple indices are present
+    */
+    private static void checkMultipleIndices(String input) throws ParseException {
+        String[] indices = input.split("\\s+");
+        if (indices.length > 1) {
+            throw new ParseException(InvalidIndexMessages.MESSAGE_MULTIPLE_INDICES);
+        }
+    }
+
+    /**
+    * Checks if the index string represents a non-integer.
+    *
+    * @param input the trimmed index string
+    * @throws ParseException if the index string contains a decimal point
+    */
+    private static void checkNonInteger(String input) throws ParseException {
+        if (input.contains(".")) {
+            throw new ParseException(InvalidIndexMessages.MESSAGE_INDEX_NON_INTEGER);
+        }
+    }
+
+    /**
+    * Checks if the index string represents a numeric integer value.
+    *
+    * @param input the trimmed index string
+    * @throws ParseException if the index string contains non-numeric characters
+    */
+    private static void checkNonNumeric(String input) throws ParseException {
+        if (!input.matches("-?\\d+")) {
+            throw new ParseException(InvalidIndexMessages.MESSAGE_INDEX_NON_NUMERIC);
+        }
+    }
+
+    /**
+    * Checks if the value of integer index is zero.
+    *
+    * @param indexValue the value of the integer index
+    * @throws ParseException if the index is zero
+    */
+    private static void checkZeroIndex(int indexValue) throws ParseException {
+        if (indexValue == 0) {
+            throw new ParseException(InvalidIndexMessages.MESSAGE_INDEX_ZERO);
+        }
+    }
+
+    /**
+    * Checks if the value of index is negative.
+    *
+    * @param indexValue the value of the integer index
+    * @throws ParseException if the index is negative
+    */
+    private static void checkNegativeIndex(int indexValue) throws ParseException {
+        if (indexValue < 0) {
+            throw new ParseException(InvalidIndexMessages.MESSAGE_INDEX_NEGATIVE);
+        }
+    }
+
 }
