@@ -39,13 +39,40 @@ public class ParserUtilTest {
     private static final String VALID_NAME_WITH_INTERNAL_TAB = "Rachel\tWalker";
 
     @Test
-    public void parseIndex_invalidInput_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseIndex("10 a"));
+    public void parseIndex_missingIndex_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseIndex("")); // empty string
+        assertThrows(ParseException.class, () -> ParserUtil.parseIndex("   ")); // whitespaces only
     }
 
     @Test
-    public void parseIndex_outOfRangeInput_throwsParseException() {
+    public void parseIndex_multipleIndices_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseIndex("1 3"));
+    }
+
+    @Test
+    public void parseIndex_nonIntegerIndex_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseIndex("2.5"));
+    }
+
+    @Test
+    public void parseIndex_nonNumericIndex_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseIndex("abc"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseIndex("1a"));
+    }
+
+    @Test
+    public void parseIndex_overflowIndex_throwsParseException() {
         assertThrows(ParseException.class, () -> ParserUtil.parseIndex(Long.toString(Integer.MAX_VALUE + 1)));
+    }
+
+    @Test
+    public void parseIndex_zeroIndex_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseIndex("0"));
+    }
+
+    @Test
+    public void parseIndex_negativeIndex_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseIndex("-2"));
     }
 
     @Test
@@ -55,6 +82,9 @@ public class ParserUtilTest {
 
         // Leading and trailing whitespaces
         assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseIndex("  1  "));
+
+        // Leading zero
+        assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseIndex("01"));
     }
 
     @Test
@@ -194,6 +224,7 @@ public class ParserUtilTest {
 
         assertEquals(expectedTagSet, actualTagSet);
     }
+
     @Test
     public void parseAddress_extraWhitespaces_returnsSanitizedAddress() throws Exception {
         String addressWithSpaces = "  123,  Jurong   West  ";
@@ -209,7 +240,7 @@ public class ParserUtilTest {
         assertEquals(expectedName, ParserUtil.parseName(VALID_NAME_WITH_EXTRA_INTERNAL_WHITESPACES));
         assertEquals(expectedName, ParserUtil.parseName(VALID_NAME_WITH_INTERNAL_TAB));
         assertEquals(expectedName.hashCode(),
-                ParserUtil.parseName(VALID_NAME_WITH_EXTRA_INTERNAL_WHITESPACES).hashCode());
+                                        ParserUtil.parseName(VALID_NAME_WITH_EXTRA_INTERNAL_WHITESPACES).hashCode());
         assertEquals(expectedName.hashCode(), ParserUtil.parseName(VALID_NAME_WITH_INTERNAL_TAB).hashCode());
     }
 }
