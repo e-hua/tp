@@ -27,7 +27,7 @@ import seedu.address.testutil.PersonBuilder;
 
 public class AddCommandTest {
 
-    @Test
+    @Testgi
     public void constructor_nullPerson_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> new AddCommand(null));
     }
