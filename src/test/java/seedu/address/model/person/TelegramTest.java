@@ -68,4 +68,13 @@ public class TelegramTest {
 
         assertTrue(telegram1.hashCode() == telegram2.hashCode());
     }
+
+    @Test
+    public void constructor_withoutAtSymbol_addsAtSymbol() {
+        Telegram telegramWithoutAt = new Telegram("bob_123");
+
+        Telegram telegramWithAt = new Telegram("@bob_123");
+
+        assertTrue(telegramWithoutAt.equals(telegramWithAt));
+    }
 }
