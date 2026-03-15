@@ -14,7 +14,7 @@ public class Telegram {
                     + "and can optionally start with '@'.";
     public static final String VALIDATION_REGEX = "^$|^@?[a-zA-Z0-9_]{5,32}$";
 
-    public final String telegramHandle;
+    public final String value;
 
     /**
      * Constructs a {@code Telegram}.
@@ -26,9 +26,9 @@ public class Telegram {
         checkArgument(isValidTelegramHandle(telegramHandle), MESSAGE_CONSTRAINTS);
 
         if (!telegramHandle.isEmpty() && !telegramHandle.startsWith("@")) {
-            this.telegramHandle = "@" + telegramHandle;
+            this.value = "@" + telegramHandle;
         } else {
-            this.telegramHandle = telegramHandle;
+            this.value = telegramHandle;
         }
     }
 
@@ -51,19 +51,19 @@ public class Telegram {
         }
 
         Telegram otherTelegram = (Telegram) other;
-        return telegramHandle.equalsIgnoreCase(otherTelegram.telegramHandle);
+        return value.equalsIgnoreCase(otherTelegram.value);
     }
 
     @Override
     public int hashCode() {
-        return telegramHandle.toLowerCase().hashCode();
+        return value.toLowerCase().hashCode();
     }
 
     /**
      * Format state as text for viewing.
      */
     public String toString() {
-        return telegramHandle;
+        return value;
     }
 
 }
