@@ -70,10 +70,12 @@ public class PersonDetailsPanel extends UiPart<Region> {
      * @param message The default message to display.
      */
     private void displayDefaultDetails(String message) {
+        logger.fine("Showing default details: " + message);
+
         name.setText(message);
 
         String[] fieldValues = { "", "", "", "" };
-        displayFields(FIELD_NAMES, fieldValues);
+        displayFields(fieldValues);
 
         tags.getChildren().clear();
     }
@@ -84,12 +86,17 @@ public class PersonDetailsPanel extends UiPart<Region> {
      * @param person The {@code person} whose details are displayed.
      */
     private void displayPersonDetails(Person person) {
+
         name.setText(formatValue(person.getName().fullName));
 
-        String[] fieldValues = { person.getEmail().value, person.getTelegram().value, person.getPhone().value,
-                person.getAddress().value };
+        String[] fieldValues = {
+                person.getEmail().value,
+                person.getTelegram().value,
+                person.getPhone().value,
+                person.getAddress().value
+        };
 
-        displayFields(FIELD_NAMES, fieldValues);
+        displayFields(fieldValues);
         displayTags(person);
     }
 
@@ -102,21 +109,23 @@ public class PersonDetailsPanel extends UiPart<Region> {
         tags.getChildren().clear();
 
         person.getTags().stream().sorted(Comparator.comparing(tag -> tag.tagName))
-                                        .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
     /**
      * Displays field names and their corresponding field values.
      *
-     * @param fieldNames  Array of field names.
      * @param fieldValues Array of field values.
      */
-    private void displayFields(String[] fieldNames, String[] fieldValues) {
+    private void displayFields(String[] fieldValues) {
+        assert FIELD_NAMES.length == fieldValues.length
+                : "Length of field names and values arrays must be equal";
+
         fieldNamesColumn.getChildren().clear();
         fieldValuesColumn.getChildren().clear();
 
-        for (int i = 0; i < fieldNames.length; i++) {
-            Label nameLabel = new Label(fieldNames[i] + ":");
+        for (int i = 0; i < fieldValues.length; i++) {
+            Label nameLabel = new Label(FIELD_NAMES[i] + ":");
             Label valueLabel = new Label(formatValue(fieldValues[i]));
 
             fieldNamesColumn.getChildren().add(nameLabel);
@@ -126,17 +135,20 @@ public class PersonDetailsPanel extends UiPart<Region> {
 
     /**
      * Formats a field value for display.
-     * Returns "---" if the value is null, empty, or a dash ("-") representing an optional field that was not filled.
+     * Returns "---" if the value is empty, or a dash ("-") representing an unfilled optional field.
      * Returns the actual value otherwise.
      *
      * @param value The value of the field.
      * @return The formatted field value for display.
      */
     private String formatValue(String value) {
-        if (value == null || value.isEmpty() || value.equals("-")) {
+        assert value != null : "Field values must not be null";
+
+        if (value.isEmpty() || value.equals("-")) {
             return EMPTY_FIELD_VALUE;
         }
 
         return value;
     }
+
 }

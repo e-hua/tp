@@ -39,8 +39,10 @@ public class ExpandedContactPanel extends UiPart<Region> {
      */
     public void setSelectedPerson(Person selectedPerson) {
         if (selectedPerson == null) {
+            logger.fine("Showing default details due to no contact selected");
             showDefaultDetails();
         } else {
+            logger.info("Displaying expanded contact details for: " + selectedPerson.getName().fullName);
             showPersonDetails(selectedPerson);
         }
     }
