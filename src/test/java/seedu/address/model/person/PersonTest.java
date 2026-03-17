@@ -49,6 +49,12 @@ public class PersonTest {
         editedAlice = new PersonBuilder(ALICE).withEmail("-").build();
         Person anotherEditedAlice = new PersonBuilder(ALICE).withEmail("-").build();
         assertFalse(editedAlice.isSamePerson(anotherEditedAlice));
+
+        // first person email is "-", second person email is not "-" -> returns false
+        assertFalse(editedAlice.isSamePerson(ALICE));
+
+        // first person email is not "-", second person email is "-" -> returns false
+        assertFalse(ALICE.isSamePerson(editedAlice));
     }
 
     @Test
