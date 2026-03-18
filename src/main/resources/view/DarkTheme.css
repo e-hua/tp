@@ -343,6 +343,10 @@
     -fx-background-radius: 0;
 }
 
+.result-display .corner {
+    -fx-background-color: transparent;
+}
+
 #tags {
     -fx-hgap: 7;
     -fx-vgap: 3;
