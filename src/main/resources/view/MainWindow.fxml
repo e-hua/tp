@@ -47,17 +47,15 @@
           </padding>
         </StackPane>
 
-        <HBox styleClass="pane-with-border" VBox.vgrow="ALWAYS">
+        <HBox styleClass="pane-with-border" VBox.vgrow="ALWAYS" spacing="20">
+          <padding>
+            <Insets top="10" right="10" bottom="10" left="10" />
+          </padding>
+          
           <VBox fx:id="personList" styleClass="pane-with-border" HBox.hgrow="ALWAYS" prefWidth="1000">
-            <padding>
-              <Insets top="10" right="10" bottom="10" left="10" />
-            </padding>
             <StackPane fx:id="personListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
           </VBox>
-          <VBox fx:id="expandedContactPanel" styleClass="pane-with-border" HBox.hgrow="ALWAYS" prefWidth="1000">
-            <padding>
-              <Insets top="10" right="10" bottom="10" left="10" />
-            </padding>
+          <VBox fx:id="expandedContactPanel" styleClass="pane-without-border" HBox.hgrow="ALWAYS" prefWidth="1000">
             <StackPane fx:id="expandedContactPanelPlaceholder" VBox.vgrow="ALWAYS"/>
           </VBox>
         </HBox>

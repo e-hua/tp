@@ -1,50 +1,59 @@
-#fieldValuesScrollPane {
-    -fx-background-color: #383838;
+.expanded-panel {
+    -fx-background-color: #cacaca;
+    -fx-background-radius: 14;
+    -fx-border-color: #818181;
+    -fx-border-radius: 10;
+    -fx-border-width: 4;
+    -fx-padding: 22;
 }
 
-#fieldValuesScrollPane .viewport {
-    -fx-background-color: #383838;
+.name-label {
+    -fx-text-fill: #1d1d1d;
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
+    -fx-padding: 0 0 18 0;
+}
+
+.field-values-scroll-pane {
+    -fx-background-color: #cacaca;
+}
+
+.field-values-scroll-pane .viewport {
+    -fx-background-color: #cacaca;
     -fx-background-insets: 0;
 }
 
-#fieldValuesScrollPane .scroll-bar:horizontal {
-    -fx-background-color: #383838;
-    -fx-pref-height: 14;
+.field-values-scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: #cacaca;
+    -fx-pref-height: 13;
 }
 
-#fieldValuesScrollPane .scroll-bar:horizontal .thumb {
-    -fx-background-color: derive(#1d1d1d, 50%);
+.field-values-scroll-pane .scroll-bar:horizontal .thumb {
+    -fx-background-color: derive(#cacaca, -60%);
     -fx-background-insets: 2;
 }
 
-#fieldValuesScrollPane .scroll-bar:horizontal .increment-button,
-#fieldValuesScrollPane .scroll-bar:horizontal .decrement-button {
+.field-values-scroll-pane .scroll-bar:horizontal .increment-button,
+.field-values-scroll-pane .scroll-bar:horizontal .decrement-button {
     -fx-background-color: transparent;
 }
 
-#fieldValuesScrollPane .scroll-bar:horizontal .increment-arrow,
-#fieldValuesScrollPane .scroll-bar:horizontal .decrement-arrow {
+.field-values-scroll-pane .scroll-bar:horizontal .increment-arrow,
+.field-values-scroll-pane .scroll-bar:horizontal .decrement-arrow {
     -fx-shape: " ";
 }
 
-#fieldValuesColumn {
-    -fx-padding: 0 0 24 0;
+.field-names-column .label {
+    -fx-text-fill: #242424;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
 }
 
-#name {
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-font-size: 18px;
+.field-values-column .label {
+    -fx-text-fill: derive(#242424, 20%);
+    -fx-font-size: 16px;
 }
 
-#fieldNamesColumn .label {
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
-}
-
-#fieldValuesColumn .label {
-    -fx-text-fill: rgb(184, 184, 184);
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
+.field-values-column {
+    -fx-padding: 0 0 20 0;
 }
