@@ -71,3 +71,7 @@
     -fx-background-radius: 4;
     -fx-font-size: 13px;
 }
+
+.flow-pane {
+    -fx-padding: 0 4 0 0;
+}
