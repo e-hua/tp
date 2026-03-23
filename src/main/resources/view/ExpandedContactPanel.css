@@ -4,7 +4,7 @@
     -fx-border-color: #818181;
     -fx-border-radius: 10;
     -fx-border-width: 4;
-    -fx-padding: 14 18 12 22;
+    -fx-padding: 18 18 12 26;
 }
 
 .name-label {
@@ -45,6 +45,10 @@
 
 .shared-scroll-pane .corner {
     -fx-background-color: transparent;
+}
+
+.fields-container {
+    -fx-padding: 8 0 0 0;
 }
 
 .field-names-column .label {

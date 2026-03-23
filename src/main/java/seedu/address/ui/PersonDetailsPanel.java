@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -36,18 +37,27 @@ public class PersonDetailsPanel extends UiPart<Region> {
     private VBox fieldValuesColumn;
 
     @FXML
+    private ScrollPane tagsScrollPane;
+
+    @FXML
     private FlowPane tags;
+
+    @FXML
+    private ScrollPane courseTutorialsScrollPane;
 
     @FXML
     private HBox courseTutorials;
 
     /**
      * Creates a {@code PersonDetailsPanel} showing the default details.
+     * Hides the courseTutorials and tags sections from UI by default.
      *
      * @param defaultMessage The message to display when no contact is selected.
      */
     public PersonDetailsPanel(String defaultMessage) {
         super(FXML);
+
+        hideOptionalSections();
         displayDefaultDetails(defaultMessage);
     }
 
@@ -104,6 +114,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
     /**
     * Displays the tags of a {@code person} in the panel.
     * Sorts the tags by tag name.
+    * Hides the tags section from UI if the person has no tags.
     *
     * @param person The {@code person} whose tags are displayed.
     */
@@ -112,7 +123,12 @@ public class PersonDetailsPanel extends UiPart<Region> {
 
         tags.getChildren().clear();
 
-        if (person.getTags().isEmpty()) {
+        boolean hasTags = !(person.getTags().isEmpty());
+
+        tagsScrollPane.setVisible(hasTags);
+        tagsScrollPane.setManaged(hasTags);
+
+        if (!hasTags) {
             logger.fine("No tags to display for " + person.getName().fullName);
             return;
         }
@@ -206,6 +222,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
     /**
     * Displays the course and tutorial information of a person in the courseTutorials HBox.
     * Sorts the tutorial information by course code first, then by tutorial code.
+    * Hides the courseTutorials section from UI if the person has no tutorials.
     *
     * @param person The person whose course and tutorial information is displayed.
     */
@@ -214,7 +231,12 @@ public class PersonDetailsPanel extends UiPart<Region> {
 
         courseTutorials.getChildren().clear();
 
-        if (person.getTutInfos().isEmpty()) {
+        boolean hasTutorials = !(person.getTutInfos().isEmpty());
+
+        courseTutorialsScrollPane.setVisible(hasTutorials);
+        courseTutorialsScrollPane.setManaged(hasTutorials);
+
+        if (!hasTutorials) {
             logger.fine("No course/tutorials to display for " + person.getName().fullName);
             return;
         }
@@ -246,6 +268,17 @@ public class PersonDetailsPanel extends UiPart<Region> {
      */
     private String formatCourseTutorialText(TutInfo tutInfo) {
         return tutInfo.getCourseCode().toUpperCase() + " " + tutInfo.getTutorialCode().toUpperCase();
+    }
+
+    /**
+     * Hides the optional UI sections (courseTutorials and tags sections) in the panel.
+     */
+    private void hideOptionalSections() {
+        courseTutorialsScrollPane.setVisible(false);
+        courseTutorialsScrollPane.setManaged(false);
+
+        tagsScrollPane.setVisible(false);
+        tagsScrollPane.setManaged(false);
     }
 
 }
