@@ -4,47 +4,64 @@
     -fx-border-color: #818181;
     -fx-border-radius: 10;
     -fx-border-width: 4;
-    -fx-padding: 18 15 18 22;
+    -fx-padding: 15 18 12 26;
+}
+
+.expanded-panel.contact-selected {
+    -fx-border-color:derive(#342a01, 70%);
+    -fx-border-width: 6;
 }
 
 .name-label {
     -fx-text-fill: #342a01;
     -fx-font-weight: bold;
     -fx-font-size: 24px;
-    -fx-padding: 0 0 8 0;
+    -fx-padding: 0 0 6 0;
 }
 
-.scroll-pane {
+.shared-scroll-pane {
     -fx-background-color: #cacaca;
 }
 
-.scroll-pane .viewport {
+.shared-scroll-pane .viewport {
     -fx-background-color: #cacaca;
 }
 
-.scroll-pane .scroll-bar {
+.shared-scroll-pane .scroll-bar {
     -fx-background-color: #cacaca;
-    -fx-pref-height: 14;
-    -fx-pref-width: 14;
+    -fx-pref-height: 11;
+    -fx-pref-width: 11;
 }
 
-.scroll-pane .thumb {
-    -fx-background-color: derive(#cacaca, -60%);
-    -fx-background-insets: 2;
+.shared-scroll-pane .thumb {
+    -fx-background-color: derive(#cacaca, -40%);
+    -fx-background-insets: 1;
 }
 
-.scroll-pane .increment-button,
-.scroll-pane .decrement-button {
+.shared-scroll-pane .increment-button,
+.shared-scroll-pane .decrement-button {
     -fx-background-color: transparent;
 }
 
-.scroll-pane .increment-arrow,
-.scroll-pane .decrement-arrow {
+.shared-scroll-pane .increment-arrow,
+.shared-scroll-pane .decrement-arrow {
     -fx-shape: " ";
 }
 
-.scroll-pane .corner {
+.shared-scroll-pane .corner {
     -fx-background-color: transparent;
+}
+
+.course-tutorial-label {
+    -fx-background-color: rgb(225, 191, 0);
+    -fx-padding: 3 6 3 6;
+    -fx-background-radius: 4;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.fields-container {
+    -fx-padding: 6 0 4 0;
 }
 
 .field-names-column .label {
@@ -64,10 +81,22 @@
     -fx-text-fill: derive(#1d1d1d, 40%);
 }
 
+.tags-scroll-pane {
+    -fx-padding: 0 0 6 0;
+}
+
 #tags .label {
     -fx-background-color: #775500ca;
     -fx-padding: 3 6 3 6;
-    -fx-border-radius: 4;
     -fx-background-radius: 4;
     -fx-font-size: 13px;
+}
+
+.tags-flow-pane {
+    -fx-padding: 0 4 0 0;
+}
+
+.separating-line {
+    -fx-background-color: black;
+    -fx-pref-height: 2px;
 }

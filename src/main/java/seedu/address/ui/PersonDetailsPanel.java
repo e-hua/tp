@@ -12,6 +12,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.TutInfo;
 
 /**
  * An UI component that displays full details of a {@code person}.
@@ -24,13 +25,14 @@ public class PersonDetailsPanel extends UiPart<Region> {
 
     private static final String[] FIELD_NAMES = { "Email", "Telegram", "Phone", "Address" };
 
+    private static final double TAGS_FLOWPANE_MAX_HEIGHT = 55;
+
     private final Logger logger = LogsCenter.getLogger(PersonDetailsPanel.class);
+
+    private final Person person;
 
     @FXML
     private Label name;
-
-    @FXML
-    private HBox fieldsContainer; // Contains fieldNamesColumn and fieldValuesColumn
 
     @FXML
     private VBox fieldNamesColumn;
@@ -39,18 +41,28 @@ public class PersonDetailsPanel extends UiPart<Region> {
     private VBox fieldValuesColumn;
 
     @FXML
-    private ScrollPane fieldValuesScrollPane;
+    private ScrollPane tagsScrollPane;
 
     @FXML
     private FlowPane tags;
 
+    @FXML
+    private ScrollPane courseTutorialsScrollPane;
+
+    @FXML
+    private HBox courseTutorials;
+
     /**
      * Creates a {@code PersonDetailsPanel} showing the default details.
+     * Hides the courseTutorials and tags sections from UI by default.
      *
      * @param defaultMessage The message to display when no contact is selected.
      */
     public PersonDetailsPanel(String defaultMessage) {
         super(FXML);
+        this.person = null;
+
+        hideOptionalSections();
         displayDefaultDetails(defaultMessage);
     }
 
@@ -61,7 +73,11 @@ public class PersonDetailsPanel extends UiPart<Region> {
      */
     public PersonDetailsPanel(Person person) {
         super(FXML);
-        displayPersonDetails(person);
+
+        assert person != null : "Person must not be null";
+        this.person = person;
+
+        displayPersonDetails();
     }
 
     /**
@@ -75,6 +91,8 @@ public class PersonDetailsPanel extends UiPart<Region> {
 
         name.setText(message);
 
+        courseTutorials.getChildren().clear();
+
         String[] fieldValues = { "", "", "", "" };
         displayFields(fieldValues);
 
@@ -83,12 +101,10 @@ public class PersonDetailsPanel extends UiPart<Region> {
 
     /**
      * Displays the full details of a {@code person} in the panel.
-     *
-     * @param person The {@code person} whose details are displayed.
      */
-    private void displayPersonDetails(Person person) {
+    private void displayPersonDetails() {
 
-        name.setText(formatValue(person.getName().fullName));
+        name.setText(formatFieldValue(person.getName().fullName));
 
         String[] fieldValues = {
                 person.getEmail().value,
@@ -97,21 +113,44 @@ public class PersonDetailsPanel extends UiPart<Region> {
                 person.getAddress().value
         };
 
+        displayCourseTutorials();
         displayFields(fieldValues);
-        displayTags(person);
+        displayTags();
     }
 
     /**
     * Displays the tags of a {@code person} in the panel.
-    *
-    * @param person The {@code person} whose tags are displayed.
+    * Sorts the tags by tag name and hides the tags section from UI if the person has no tags.
     */
-    private void displayTags(Person person) {
+    private void displayTags() {
+        assert person.getTags() != null : "Tags of the person must not be null";
+
         tags.getChildren().clear();
+
+        boolean hasTags = !(person.getTags().isEmpty());
+        tagsScrollPane.setVisible(hasTags);
+        tagsScrollPane.setManaged(hasTags);
+
+        if (!hasTags) {
+            logger.fine("No tags to display for " + person.getName().fullName);
+            return;
+        }
+
+        logger.fine("Displaying " + person.getTags().size() + " tags for " + person.getName().fullName);
 
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+
+        limitTagsHeight();
+    }
+
+    /**
+     * Limits the height of the {@code tags} to {@code TAGS_FLOWPANE_MAX_HEIGHT}.
+     */
+    private void limitTagsHeight() {
+        tags.heightProperty().addListener((observable, oldHeight, newHeight)
+                -> tags.setPrefHeight(Math.min(newHeight.doubleValue(), TAGS_FLOWPANE_MAX_HEIGHT)));
     }
 
     /**
@@ -139,7 +178,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
     * @param fieldValue The value of the field.
     */
     private void addFieldToColumns(String fieldName, String fieldValue) {
-        String formattedValue = formatValue(fieldValue);
+        String formattedValue = formatFieldValue(fieldValue);
 
         Label nameLabel = createFieldLabel(fieldName + ":", fieldValue);
         Label valueLabel = createFieldLabel(formattedValue, fieldValue);
@@ -173,7 +212,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
      * @param value The value of the field.
      * @return The formatted field value for display.
      */
-    private String formatValue(String value) {
+    private String formatFieldValue(String value) {
         assert value != null : "Field values must not be null";
 
         if (isMissingValue(value)) {
@@ -192,4 +231,65 @@ public class PersonDetailsPanel extends UiPart<Region> {
     private boolean isMissingValue(String value) {
         return (value.isEmpty() || value.equals("-"));
     }
+
+    /**
+    * Displays the course and tutorial information of the {@code person} in the courseTutorials HBox.
+    * Sorts the tutorial information by course code first, then by tutorial code.
+    * Hides the courseTutorials section from UI if the person has no tutorials.
+    */
+    private void displayCourseTutorials() {
+        assert person.getTutInfos() != null : "Tutorial information list of the person must not be null";
+
+        courseTutorials.getChildren().clear();
+
+        boolean hasTutorials = !(person.getTutInfos().isEmpty());
+
+        courseTutorialsScrollPane.setVisible(hasTutorials);
+        courseTutorialsScrollPane.setManaged(hasTutorials);
+
+        if (!hasTutorials) {
+            logger.fine("No course/tutorials to display for " + person.getName().fullName);
+            return;
+        }
+
+        logger.fine("Displaying " + person.getTutInfos().size() + " tutorials for " + person.getName().fullName);
+
+        person.getTutInfos().stream()
+                .sorted(Comparator.comparing(TutInfo::getCourseCode).thenComparing(TutInfo::getTutorialCode))
+                .forEach(this::addCourseTutorialLabel);
+    }
+
+    /**
+     * Creates a label for a single course and tutorial entry and adds it to courseTutorials HBox.
+     *
+     * @param tutInfo The TutInfo object representing the course and tutorial entry.
+     */
+    private void addCourseTutorialLabel(TutInfo tutInfo) {
+        Label label = new Label(formatCourseTutorialText(tutInfo));
+        label.getStyleClass().add("course-tutorial-label");
+
+        courseTutorials.getChildren().add(label);
+    }
+
+    /**
+     * Formats the display text for a course and tutorial entry.
+     *
+     * @param tutInfo The TutInfo object.
+     * @return The display text of course code and tutorial code in uppercase, separated by a space.
+     */
+    private String formatCourseTutorialText(TutInfo tutInfo) {
+        return tutInfo.getCourseCode().toUpperCase() + " " + tutInfo.getTutorialCode().toUpperCase();
+    }
+
+    /**
+     * Hides the optional UI sections (courseTutorials and tags sections) in the panel.
+     */
+    private void hideOptionalSections() {
+        courseTutorialsScrollPane.setVisible(false);
+        courseTutorialsScrollPane.setManaged(false);
+
+        tagsScrollPane.setVisible(false);
+        tagsScrollPane.setManaged(false);
+    }
+
 }

@@ -18,7 +18,7 @@ public class ExpandedContactPanel extends UiPart<Region> {
 
     private final Logger logger = LogsCenter.getLogger(ExpandedContactPanel.class);
 
-    // Container holding the detail sections in Expanded Contact Panel.
+    // Container holding the PersonDetailsPanel and AttendancePanel.
     @FXML
     private VBox detailsContainer;
 
@@ -32,18 +32,26 @@ public class ExpandedContactPanel extends UiPart<Region> {
     }
 
     /**
-     * Updates the panel with the selected {@code person} whose contact details will be shown.
-     * Displays default message if the selected contact is null.
+     * Updates the panel to display the details and attendance records of the {@code selectedPerson}.
+     * Displays default message if the {@code selectedPerson} is null.
+     * Applies styling to highlight the panel only when a person is selected.
      *
      * @param selectedPerson The person who is currently selected in the contact list.
      */
     public void setSelectedPerson(Person selectedPerson) {
+        detailsContainer.getStyleClass().remove("contact-selected");
+
         if (selectedPerson == null) {
             logger.fine("Showing default details due to no contact selected");
+
             showDefaultDetails();
         } else {
-            logger.info("Displaying expanded contact details for: " + selectedPerson.getName().fullName);
+            logger.fine("Displaying expanded contact details for: " + selectedPerson.getName().fullName);
+
             showPersonDetails(selectedPerson);
+            showAttendanceSection(selectedPerson);
+
+            detailsContainer.getStyleClass().add("contact-selected");
         }
     }
 
@@ -51,8 +59,8 @@ public class ExpandedContactPanel extends UiPart<Region> {
      * Displays a default message using {@code PersonDetailsPanel}.
      */
     private void showDefaultDetails() {
-        PersonDetailsPanel panel = new PersonDetailsPanel(DEFAULT_MESSAGE);
-        updateDetailsContainer(panel);
+        PersonDetailsPanel personDetailsPanel = new PersonDetailsPanel(DEFAULT_MESSAGE);
+        updateDetailsContainer(personDetailsPanel);
     }
 
     /**
@@ -61,17 +69,29 @@ public class ExpandedContactPanel extends UiPart<Region> {
      * @param person The {@code person} to be displayed.
      */
     private void showPersonDetails(Person person) {
-        PersonDetailsPanel panel = new PersonDetailsPanel(person);
-        updateDetailsContainer(panel);
+        PersonDetailsPanel personDetailsPanel = new PersonDetailsPanel(person);
+        updateDetailsContainer(personDetailsPanel);
+    }
+
+    /**
+    * Adds the {@code AttendancePanel} to the {@code detailsContainer}.
+    *
+    * @param person The {@code person} whose attendance record will be displayed.
+    */
+    private void showAttendanceSection(Person person) {
+        logger.fine("Adding attendance section for: " + person.getName().fullName);
+
+        AttendancePanel attendancePanel = new AttendancePanel(person);
+        detailsContainer.getChildren().add(attendancePanel.getRoot());
     }
 
     /**
      * Clears the container and adds {@code PersonDetailsPanel}.
      *
-     * @param panel The {@code PersonDetailsPanel} to display.
+     * @param personDetailsPanel The {@code PersonDetailsPanel} to display.
      */
-    private void updateDetailsContainer(PersonDetailsPanel panel) {
+    private void updateDetailsContainer(PersonDetailsPanel personDetailsPanel) {
         detailsContainer.getChildren().clear();
-        detailsContainer.getChildren().add(panel.getRoot());
+        detailsContainer.getChildren().add(personDetailsPanel.getRoot());
     }
 }
