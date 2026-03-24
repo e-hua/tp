@@ -62,7 +62,7 @@ public class AttendCommand extends Command {
         TutInfo tutInfoToUpdate = null;
         int tutInfoIndex = -1;
         for (int i = 0; i < tutInfos.size(); i++) {
-            if (tutInqfos.get(i).getCourseCode().equals(courseCode)) {
+            if (tutInfos.get(i).getCourseCode().equals(courseCode)) {
                 tutInfoToUpdate = tutInfos.get(i);
                 tutInfoIndex = i;
                 break;
