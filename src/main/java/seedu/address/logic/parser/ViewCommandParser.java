@@ -19,6 +19,9 @@ public class ViewCommandParser implements Parser<ViewCommand> {
 
         try {
             Index index = ParserUtil.parseIndex(args);
+
+            assert index.getOneBased() >= 1 : "Index after parsing must be an integer of at least one";
+
             return new ViewCommand(index);
         } catch (ParseException pe) {
             throw new ParseException(
