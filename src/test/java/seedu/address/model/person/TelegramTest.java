@@ -1,5 +1,6 @@
 package seedu.address.model.person;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -12,8 +13,6 @@ public class TelegramTest {
     public void constructor_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> new Telegram(null));
     }
-
-
 
     @Test
     public void constructor_invalidTelegram_throwsIllegalArgumentException() {
@@ -79,5 +78,17 @@ public class TelegramTest {
         Telegram telegramWithAt = new Telegram("@bob_123");
 
         assertTrue(telegramWithoutAt.equals(telegramWithAt));
+    }
+
+    @Test
+    public void getDisplayValue_returnsCorrectDisplay() {
+        Telegram handleWithoutAt = new Telegram("alice123");
+        assertEquals("@alice123", handleWithoutAt.getDisplayValue());
+
+        Telegram handleWithAt = new Telegram("@alice123");
+        assertEquals("@alice123", handleWithAt.getDisplayValue());
+
+        Telegram missingHandle = new Telegram("-");
+        assertEquals("-", missingHandle.getDisplayValue());
     }
 }
