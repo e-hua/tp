@@ -37,6 +37,8 @@ public class PersonCard extends UiPart<Region> {
     private VBox fieldsContainer;
     @FXML
     private FlowPane tags;
+    @FXML
+    private VBox tutInfosContainer;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
