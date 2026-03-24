@@ -152,6 +152,20 @@ Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 
+### Viewing a contact : `view`
+
+Displays full details of a contact in TAConnect.
+
+Format: `view INDEX`
+
+* Views **all available information** of the contact at the specified `INDEX`.
+* `INDEX` refers to the position of the contact in the currently displayed list.
+* The index **must be a positive integer** (1, 2, 3, …​) corresponding to an existing contact.
+* Does **not** modify any data with only display updates.
+
+Examples:
+* `view 3` Shows full details of the third contact in the current filtered list.
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the address book.
