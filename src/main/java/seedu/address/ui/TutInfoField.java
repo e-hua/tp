@@ -1,8 +1,5 @@
 package seedu.address.ui;
 
-import static seedu.address.model.person.Telegram.TELEGRAM_PREFIX;
-import static seedu.address.ui.PersonDetailsPanel.EMPTY_FIELD_VALUE;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;

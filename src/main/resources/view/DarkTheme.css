@@ -378,3 +378,17 @@
     -fx-font-style: italic;
     -fx-text-fill: derive(#1d1d1d, 40%);
 }
+
+.tut-info-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.tut-info-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+.tut-info-scroll .scroll-bar:vertical {
+    -fx-pref-width: 12;
+}
