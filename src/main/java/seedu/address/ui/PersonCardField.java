@@ -21,7 +21,7 @@ public class PersonCardField extends UiPart<Region> {
 
     /**
      * Creates a {@code PersonCardField} with the given field type and value to display.
-     * Displays {@code "—"} if the value is empty or absent.
+     * Displays {@code "---"} if the value is empty or absent.
      *
      * @param fieldType The label describing the field (e.g. "Phone", "Address").
      * @param value The value to display.

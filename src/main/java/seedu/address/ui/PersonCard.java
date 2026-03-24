@@ -37,6 +37,8 @@ public class PersonCard extends UiPart<Region> {
     private VBox fieldsContainer;
     @FXML
     private FlowPane tags;
+    @FXML
+    private VBox tutInfosContainer;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -52,6 +54,11 @@ public class PersonCard extends UiPart<Region> {
                 new PersonCardField("Telegram", person.getTelegram().value).getRoot(),
                 new PersonCardField("Phone", person.getPhone().value).getRoot()
         );
+
+        person.getTutInfos()
+                .forEach(tutInfo -> tutInfosContainer
+                        .getChildren().add(
+                                new TutInfoField(tutInfo.getCourseCode(), tutInfo.getTutorialCode()).getRoot()));
 
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
