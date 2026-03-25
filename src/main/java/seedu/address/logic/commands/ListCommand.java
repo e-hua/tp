@@ -19,7 +19,12 @@ public class ListCommand extends Command {
         requireNonNull(model);
 
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        model.setPersonToShow(model.getFilteredPersonList().get(0)); // Always show the first person in list
+        if (!(model.getFilteredPersonList().isEmpty())) {
+            // Always show the first person in the list
+            model.setPersonToShow(model.getFilteredPersonList().get(0));
+        } else {
+            model.setPersonToShow(null);
+        }
 
         return new CommandResult(MESSAGE_SUCCESS);
     }
