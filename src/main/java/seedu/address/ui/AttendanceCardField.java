@@ -12,22 +12,23 @@ public class AttendanceCardField extends UiPart<Region> {
     private static final String FXML = "AttendanceListCardField.fxml";
 
     @FXML
-    private Label fieldType;
+    private Label week;
     @FXML
-    private Label value;
+    private Label isAttended;
 
     /**
-     * Creates a {@code PersonCardField} with the given field type and value to display.
-     * Displays {@code "---"} if the value is empty or absent.
+     * Creates a {@code AttendanceCardField} with the given week and attendance status to display.
      *
-     * @param fieldType The label describing the field (e.g. "Phone", "Address").
-     * @param value The value to display.
+     * @param week       The week number for tutorial attendance (between 1 and 13 (inclusive)).
+     * @param isAttended The boolean indicating if the tutorial was attended for that week.
      */
-    public AttendanceCardField(String fieldType, String value) {
+    public AttendanceCardField(int week, boolean isAttended) {
         super(FXML);
-        this.fieldType.setText(fieldType + ":");
-        this.value.setText(formatValue(fieldType, value));
-        if (value.equals("-")) {
-            applyMissingFieldStyle();
+        this.week.setText("Week " + week);
+        if (isAttended) {
+            this.isAttended.setText("Attended");
+        } else {
+            this.isAttended.setText("Not attended");
         }
+    }
 }
