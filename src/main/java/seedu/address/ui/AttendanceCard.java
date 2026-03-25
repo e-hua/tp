@@ -1,18 +1,13 @@
 package seedu.address.ui;
 
-import java.util.Comparator;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import seedu.address.model.person.Person;
+import seedu.address.model.person.TutInfo;
 
 /**
- * An UI component that displays information of a {@code Person}.
+ * An UI component that displays attendance information for a tutorial of a {@code Person}.
  */
 public class AttendanceCard extends UiPart<Region> {
 
@@ -26,34 +21,32 @@ public class AttendanceCard extends UiPart<Region> {
      * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
      */
 
-    public final Person person;
+    public final TutInfo tutInfo;
+
+    public final boolean[] attendance;
 
     @FXML
-    private ListView<Person> personListView;
+    private VBox cardPane;
+    @FXML
+    private Label courseCode;
+    @FXML
+    private Label tutorialCode;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
      */
-    public AttendanceCard(Person person, int displayedIndex) {
+    public AttendanceCard(TutInfo tutInfo) {
         super(FXML);
-        this.person = person;
-        id.setText(displayedIndex + ". ");
-        name.setText(person.getName().fullName);
+        this.tutInfo = tutInfo;
+        this.attendance = tutInfo.getAttendance();
+        courseCode.setText(tutInfo.getCourseCode());
+        tutorialCode.setText(tutInfo.getTutorialCode());
 
-        fieldsContainer.getChildren().addAll(
-                new PersonCardField("Email", person.getEmail().value).getRoot(),
-                new PersonCardField("Telegram", person.getTelegram().value).getRoot(),
-                new PersonCardField("Phone", person.getPhone().value).getRoot()
-        );
 
-        person.getTutInfos().stream()
-                .sorted(Comparator.comparing(tutInfo -> tutInfo.getCourseCode().toUpperCase()))
-                .forEach(tutInfo -> tutInfosContainer
-                        .getChildren().add(
-                                new TutInfoField(tutInfo.getCourseCode(), tutInfo.getTutorialCode()).getRoot()));
-
-        person.getTags().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        for (int i = 1; i <= 13; i++) {
+            if (attendance[i]) {
+                cardPane.getChildren().add()
+            }
+        }
     }
 }
