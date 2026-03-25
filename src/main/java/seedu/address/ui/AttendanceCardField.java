@@ -5,7 +5,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 
 /**
- * An UI component that displays information of a {@code Person}.
+ * An UI component that displays the attendance status for a single week
+ * of a {@code TutInfo} belonging to a {@code Person}.
  */
 public class AttendanceCardField extends UiPart<Region> {
 

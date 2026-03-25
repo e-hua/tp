@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 import seedu.address.model.person.TutInfo;
 
 /**
- * An UI component that displays attendance information for a tutorial of a {@code Person}.
+ * An UI component that displays attendance information for a {@code TutInfo} of a {@code Person}.
  */
 public class AttendanceCard extends UiPart<Region> {
 
@@ -33,7 +33,7 @@ public class AttendanceCard extends UiPart<Region> {
     private Label tutorialCode;
 
     /**
-     * Creates a {@code PersonCode} with the given {@code Person} and index to display.
+     * Creates a {@code AttendanceCard} with the given {@code TutInfo}.
      */
     public AttendanceCard(TutInfo tutInfo) {
         super(FXML);
