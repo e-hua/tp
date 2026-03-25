@@ -43,7 +43,7 @@ public class AttendanceCard extends UiPart<Region> {
         tutorialCode.setText(tutInfo.getTutorialCode());
 
         for (int i = 1; i <= 13; i++) {
-            cardPane.getChildren().add(new AttendanceCardField(i, attendance[i]).getRoot());
+            cardPane.getChildren().add(new AttendanceCardField(i, attendance[i - 1]).getRoot());
         }
     }
 }

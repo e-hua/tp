@@ -1,12 +1,17 @@
 package seedu.address.ui;
 
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.TutInfo;
 
 /**
  * An UI component that displays attendance record of a {@code person}.
@@ -20,7 +25,7 @@ public class AttendanceListPanel extends UiPart<Region> {
     private final Person person;
 
     @FXML
-    private Label label;
+    private ListView<TutInfo> tutInfoListView;
 
     /**
      * Creates an {@code AttendancePanel} showing the attendance record.
@@ -30,7 +35,21 @@ public class AttendanceListPanel extends UiPart<Region> {
     public AttendanceListPanel(Person person) {
         super(FXML);
         this.person = person;
+        // may want to change to ObservableList<TutInfos> so that it updates automatically
+        tutInfoListView.getItems().setAll(person.getTutInfos());
+        tutInfoListView.setCellFactory(listView -> new TutInfoListViewCell());
+    }
 
-        label.setText("to be implemented");
+    class TutInfoListViewCell extends ListCell<TutInfo> {
+        @Override
+        protected void updateItem(TutInfo tutInfo, boolean empty) {
+            super.updateItem(tutInfo, empty);
+            if (empty || tutInfo == null) {
+                setGraphic(null);
+                setText(null);
+            } else {
+                setGraphic(new AttendanceCard(tutInfo).getRoot());
+            }
+        }
     }
 }
