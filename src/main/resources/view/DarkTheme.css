@@ -392,3 +392,13 @@
 .tut-info-scroll .scroll-bar:vertical {
     -fx-pref-width: 12;
 }
+
+.list-cell .label.attended {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: #32a852;
+}
+
+.list-cell .label.unattended {
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #808080;
+}
