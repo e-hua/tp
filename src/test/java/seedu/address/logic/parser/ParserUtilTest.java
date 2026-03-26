@@ -401,7 +401,7 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseWeek_validValueWithWhitespace_returnsWeek() throws Exception {
+    public void parseWeek_validValueWithWhitespace_returnsTrimmedWeek() throws Exception {
         String weekWithWhitespace = WHITESPACE + String.valueOf(VALID_WEEK) + WHITESPACE;
         assertEquals(VALID_WEEK, ParserUtil.parseWeek(weekWithWhitespace));
     }
