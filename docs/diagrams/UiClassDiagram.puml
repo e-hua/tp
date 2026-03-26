@@ -43,7 +43,7 @@ MainWindow --> "0..1" HelpWindow
 PersonListPanel -down-> "*" PersonCard
 
 ExpandedContactPanel -down-> "1" PersonDetailsPanel
-PersonCard -down-> "3" PersonCardField
+PersonCard *-down-> "3" PersonCardField
 
 MainWindow -left-|> UiPart
 
@@ -53,6 +53,7 @@ ExpandedContactPanel --|> UiPart
 PersonDetailsPanel --|> UiPart
 PersonListPanel --|> UiPart
 PersonCard --|> UiPart
+PersonCardField --|> UiPart
 StatusBarFooter --|> UiPart
 HelpWindow --|> UiPart
 
