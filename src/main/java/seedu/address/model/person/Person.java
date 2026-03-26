@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
 
@@ -79,6 +81,10 @@ public class Person {
      */
     public List<TutInfo> getTutInfos() {
         return Collections.unmodifiableList(tutInfos);
+    }
+
+    public ObservableList<TutInfo> getObservableTutInfos() {
+        return FXCollections.observableList(this.getTutInfos());
     }
 
     /**

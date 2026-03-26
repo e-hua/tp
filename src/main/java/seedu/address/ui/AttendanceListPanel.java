@@ -2,6 +2,7 @@ package seedu.address.ui;
 
 import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -32,8 +33,7 @@ public class AttendanceListPanel extends UiPart<Region> {
     public AttendanceListPanel(Person person) {
         super(FXML);
         this.person = person;
-        // may want to change to ObservableList<TutInfos> so that it updates automatically
-        tutInfoListView.getItems().setAll(person.getTutInfos());
+        tutInfoListView.getItems().setAll(person.getObservableTutInfos());
         tutInfoListView.setCellFactory(listView -> new TutInfoListViewCell());
     }
 
