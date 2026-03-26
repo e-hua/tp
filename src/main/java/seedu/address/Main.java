@@ -36,7 +36,8 @@ public class Main {
         // can be ignored.
 
         logger.warning("The warning about Unsupported JavaFX configuration below (if any) can be ignored.");
-        Application.launch(MainApp.class, args);
         logger.info("Application started!");
+        Application.launch(MainApp.class, args);
+        logger.info("Application ended!");
     }
 }
