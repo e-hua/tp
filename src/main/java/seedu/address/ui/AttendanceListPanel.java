@@ -3,6 +3,7 @@ package seedu.address.ui;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
@@ -32,6 +33,7 @@ public class AttendanceListPanel extends UiPart<Region> {
     public AttendanceListPanel(Person person) {
         super(FXML);
         this.person = person;
+        tutInfoListView.setPlaceholder(new Label("No classes found"));
         tutInfoListView.getItems().setAll(person.getObservableTutInfos());
         tutInfoListView.setCellFactory(listView -> new TutInfoListViewCell());
     }

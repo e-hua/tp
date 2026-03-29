@@ -404,7 +404,7 @@
 
 .list-cell .label.unattended {
     -fx-text-fill: #888888;
-    -fx-background-color: #e8e8e8;
+    -fx-background-color: #cccccc;
     -fx-padding: 1 10 1 10;
     -fx-background-radius: 20;
     -fx-font-size: 14;
@@ -428,4 +428,24 @@
     -fx-border-color: #7a5000;
     -fx-background-radius: 4;
     -fx-font-size: 14;
+}
+
+.attendance-list .list-view,
+.attendance-list .list-cell,
+.attendance-list .list-cell:filled:even,
+.attendance-list .list-cell:filled:odd,
+.attendance-list .list-cell:filled:selected {
+    -fx-background-color: #cacaca;
+}
+
+.attendance-list .label {
+    -fx-font-size: 14;
+}
+
+.attendance-card {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 14;
+    -fx-border-color: #444444;
+    -fx-border-radius: 10;
+    -fx-border-width: 4;
 }
