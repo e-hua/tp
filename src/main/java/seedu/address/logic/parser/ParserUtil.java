@@ -70,6 +70,7 @@ public class ParserUtil {
     /**
      * Parses a {@code String phone} into a {@code Phone}.
      * Leading and trailing whitespaces will be trimmed.
+     * Dash ("-") and empty strings are invalid for user input.
      *
      * @throws ParseException if the given {@code phone} is invalid.
      */
@@ -85,6 +86,7 @@ public class ParserUtil {
     /**
      * Parses a {@code String address} into an {@code Address}.
      * Leading and trailing whitespaces will be trimmed.
+     * Dash ("-") and empty strings are invalid for user input.
      *
      * @throws ParseException if the given {@code address} is invalid.
      */
@@ -100,6 +102,7 @@ public class ParserUtil {
     /**
      * Parses a {@code String email} into an {@code Email}.
      * Leading and trailing whitespaces will be trimmed.
+     * Dash ("-") and empty strings are invalid for user input.
      *
      * @throws ParseException if the given {@code email} is invalid.
      */
@@ -142,16 +145,13 @@ public class ParserUtil {
     /**
      * Parses a {@code String telegram} into a {@code Telegram}.
      * Leading and trailing whitespaces will be trimmed.
+     * Dash ("-") and empty strings are invalid for user input.
      *
      * @throws ParseException if the given {@code telegram} is invalid.
      */
     public static Telegram parseTelegram(String telegram) throws ParseException {
         requireNonNull(telegram);
         String trimmedTelegram = telegram.trim();
-
-        if (trimmedTelegram.isEmpty()) {
-            return new Telegram("-");
-        }
 
         if (!Telegram.isValidTelegramHandle(trimmedTelegram)) {
             throw new ParseException(Telegram.MESSAGE_CONSTRAINTS);
@@ -162,6 +162,7 @@ public class ParserUtil {
     /**
      * Parses a {@code String course} into a course code.
      * Leading and trailing whitespaces will be trimmed.
+     * Dash ("-") and empty strings are invalid for user input.
      *
      * @throws ParseException if the given {@code course} is invalid.
      */
@@ -177,6 +178,7 @@ public class ParserUtil {
     /**
      * Parses a {@code String tutorial} into a tutorial code.
      * Leading and trailing whitespaces will be trimmed.
+     * Dash ("-") and empty strings are invalid for user input.
      *
      * @throws ParseException if the given {@code tutorial} is invalid.
      */

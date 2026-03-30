@@ -61,10 +61,11 @@ class JsonAdaptedPerson {
      */
     public JsonAdaptedPerson(Person source) {
         name = source.getName().fullName;
-        phone = source.getPhone().value;
-        email = source.getEmail().value;
-        address = source.getAddress().value;
-        telegram = source.getTelegram().value;
+        phone = source.getPhone().map(p -> p.value).orElse("-");
+        email = source.getEmail().map(p -> p.value).orElse("-");
+        address = source.getAddress().map(p -> p.value).orElse("-");
+        telegram = source.getTelegram().map(p -> p.value).orElse("-");
+
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));

@@ -7,13 +7,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
-
 
 /**
  * Represents a Person in the address book.
@@ -21,23 +22,28 @@ import seedu.address.model.tag.Tag;
  */
 public class Person {
 
-    // Identity fields
+    // Mandatory field
     private final Name name;
-    private final Phone phone;
-    private final Email email;
+
+    // Optional fields
+    private final Optional<Phone> phone;
+    private final Optional<Email> email;
+    private final Optional<Address> address;
+    private final Optional<Telegram> telegram;
 
     // Data fields
-    private final Address address;
     private final Set<Tag> tags = new HashSet<>();
-    private final Telegram telegram;
     private final List<TutInfo> tutInfos = new ArrayList<>();
 
     /**
      * Every field must be present and not null.
+     * Optional fields will be stored as Optional.empty() if no value is provided.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Telegram telegram, Set<Tag> tags,
-                  List<TutInfo> tutInfos) {
+    public Person(Name name, Optional<Phone> phone, Optional<Email> email, Optional<Address> address,
+                Optional<Telegram> telegram, Set<Tag> tags, List<TutInfo> tutInfos) {
+
         requireAllNonNull(name, phone, email, address, telegram, tags, tutInfos);
+        
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -51,19 +57,19 @@ public class Person {
         return name;
     }
 
-    public Phone getPhone() {
+    public Optional<Phone> getPhone() {
         return phone;
     }
 
-    public Email getEmail() {
+    public Optional<Email> getEmail() {
         return email;
     }
 
-    public Address getAddress() {
+    public Optional<Address> getAddress() {
         return address;
     }
 
-    public Telegram getTelegram() {
+    public Optional<Telegram> getTelegram() {
         return telegram;
     }
 
@@ -90,7 +96,7 @@ public class Person {
     /**
      * Returns true if both persons have the same email.
      * This defines a weaker notion of equality between two persons.
-     * The placeholder email "-" is not considered unique.
+     * The missing emails are not considered unique.
      */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
@@ -101,7 +107,7 @@ public class Person {
             return false;
         }
 
-        if (getEmail().value.equals("-") || otherPerson.getEmail().value.equals("-")) {
+        if (getEmail().isEmpty() || otherPerson.getEmail().isEmpty()) {
             return false;
         }
 
@@ -153,47 +159,56 @@ public class Person {
     }
 
     /**
-     * Returns true if the Person's name matches the keyword
-     * Case-insensitive
+     * Returns true if the Person's name matches the keyword.
+     * Case-insensitive.
      */
     public boolean nameMatches(String keyword) {
-        return seedu.address.commons.util.StringUtil.containsIgnoreCase(name.fullName, keyword);
+        return StringUtil.containsIgnoreCase(name.fullName, keyword);
     }
 
     /**
-     * Returns true if the Person's phone matches the keyword
-     * Case-insensitive
+     * Returns true if the Person's phone matches the keyword.
+     * Case-insensitive.
      */
     public boolean phoneMatches(String keyword) {
-        return seedu.address.commons.util.StringUtil.containsIgnoreCase(phone.value, keyword);
+        return fieldMatches(phone, keyword);
     }
 
     /**
-     * Returns true if the Person's email matches the keyword
-     * Case-insensitive
+     * Returns true if the Person's email matches the keyword.
+     * Case-insensitive.
      */
     public boolean emailMatches(String keyword) {
-        return seedu.address.commons.util.StringUtil.containsIgnoreCase(email.value, keyword);
+        return fieldMatches(email, keyword);
     }
 
     /**
-     * Returns true if the Person's address matches the keyword
-     * Case-insensitive
+     * Returns true if the Person's address matches the keyword.
+     * Case-insensitive.
      */
     public boolean addressMatches(String keyword) {
-        return seedu.address.commons.util.StringUtil.containsIgnoreCase(address.value, keyword);
+       return fieldMatches(address, keyword);
     }
 
     /**
-     * Returns true if the Person's telegram handle matches the keyword
-     * Case-insensitive
+     * Returns true if the Person's telegram handle matches the keyword.
+     * Case-insensitive.
      */
     public boolean telegramMatches(String keyword) {
-        String cleanKeyword = keyword;
-        if (cleanKeyword.startsWith("@")) {
-            cleanKeyword = cleanKeyword.substring(1);
-        }
-        return seedu.address.commons.util.StringUtil.containsIgnoreCase(telegram.value, cleanKeyword);
+        String cleanKeyword = (keyword.startsWith("@")) ? keyword.substring(1) : keyword;
+
+        return fieldMatches(telegram, cleanKeyword);
+    }
+
+    /**
+     * Checks if the value in the Optional matches the given keyword (case-insensitive).
+     *
+     * @param field the value to check.
+     * @param keyword the keyword to match.
+     * @return true if the field is present and contains the keyword, false otherwise.
+     */
+    private boolean fieldMatches(Optional<?> field, String keyword) {
+        return field.map(f -> StringUtil.containsIgnoreCase(f.toString(), keyword)).orElse(false);
     }
 
     /**
