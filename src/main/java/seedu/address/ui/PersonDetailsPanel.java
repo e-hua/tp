@@ -107,10 +107,10 @@ public class PersonDetailsPanel extends UiPart<Region> {
         name.setText(formatFieldValue(person.getName().fullName));
 
         String[] fieldValues = {
-                person.getEmail().value,
-                person.getTelegram().getDisplayValue(),
-                person.getPhone().value,
-                person.getAddress().value
+                person.getDisplayEmail(),
+                person.getDisplayTelegram(),
+                person.getDisplayPhone(),
+                person.getDisplayAddress()
         };
 
         displayCourseTutorials();

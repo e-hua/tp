@@ -57,7 +57,7 @@ public class Telegram {
     *
     * @return the formatted telegram handle for display.
     */
-    public String getDisplayValue() {
+    public String toDisplayString() {
         return TELEGRAM_PREFIX + value;
     }
 
@@ -81,9 +81,7 @@ public class Telegram {
         return value.toLowerCase().hashCode();
     }
 
-    /**
-     * Format state as text for viewing.
-     */
+    @Override
     public String toString() {
         return value;
     }

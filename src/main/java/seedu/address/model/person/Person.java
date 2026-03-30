@@ -73,6 +73,23 @@ public class Person {
         return telegram;
     }
 
+    // Returns display-purpose strings for optional person fields used in the UI.
+    public String getDisplayPhone() {
+        return phone.map(Phone::toString).orElse("-");
+    }
+
+    public String getDisplayEmail() {
+        return email.map(Email::toString).orElse("-");
+    }
+
+    public String getDisplayTelegram() {
+        return telegram.map(Telegram::toDisplayString).orElse("-");
+    }
+
+    public String getDisplayAddress() {
+        return address.map(Address::toString).orElse("-");
+    }
+
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
@@ -134,7 +151,7 @@ public class Person {
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
-                && otherPerson.getTelegram().equals(getTelegram())
+                && telegram.equals(otherPerson.telegram)
                 && tags.equals(otherPerson.tags)
                 && tutInfos.equals(otherPerson.tutInfos);
     }

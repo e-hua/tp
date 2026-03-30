@@ -38,11 +38,13 @@ public class Messages {
         final StringBuilder builder = new StringBuilder();
         builder.append(person.getName())
                 .append("; Phone: ")
-                .append(person.getPhone())
+                .append(person.getDisplayPhone())
                 .append("; Email: ")
-                .append(person.getEmail())
+                .append(person.getDisplayEmail())
+                .append("; Telegram: ")
+                .append(person.getDisplayTelegram())
                 .append("; Address: ")
-                .append(person.getAddress())
+                .append(person.getDisplayAddress())
                 .append("; Courses: ");
 
         person.getTutInfos().forEach(tut -> builder
