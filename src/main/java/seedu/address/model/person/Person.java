@@ -43,7 +43,7 @@ public class Person {
                 Optional<Telegram> telegram, Set<Tag> tags, List<TutInfo> tutInfos) {
 
         requireAllNonNull(name, phone, email, address, telegram, tags, tutInfos);
-        
+
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -204,7 +204,7 @@ public class Person {
      * Case-insensitive.
      */
     public boolean addressMatches(String keyword) {
-       return fieldMatches(address, keyword);
+        return fieldMatches(address, keyword);
     }
 
     /**

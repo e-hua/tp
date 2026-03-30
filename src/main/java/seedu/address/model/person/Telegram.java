@@ -47,7 +47,7 @@ public class Telegram {
         if (telegramHandle.startsWith("@")) {
             return telegramHandle.substring(1);
         }
-        
+
         return telegramHandle;
     }
 
