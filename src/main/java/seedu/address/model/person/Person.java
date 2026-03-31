@@ -22,7 +22,7 @@ import seedu.address.model.tag.Tag;
  */
 public class Person {
     // Display value for optional fields that are missing (Optional.empty())
-    private static final String MISSING_OPTIONAL_FIELD_VALUE = "-";
+    public static final String MISSING_OPTIONAL_FIELD_VALUE = "-";
 
     // Mandatory field
     private final Name name;
