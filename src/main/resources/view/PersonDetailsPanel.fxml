@@ -14,12 +14,12 @@
   </ScrollPane>
 
   <ScrollPane fx:id="courseTutorialsScrollPane" styleClass="shared-scroll-pane" HBox.hgrow="ALWAYS"
-      fitToWidth="false" fitToHeight="true" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" minHeight="50">
+      fitToWidth="false" fitToHeight="true" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" minHeight="45">
     <HBox fx:id="courseTutorials" spacing="10" />
   </ScrollPane>
 
   <HBox fx:id="fieldsContainer" styleClass="fields-container" spacing="7">
-    <VBox fx:id="fieldNamesColumn" styleClass="field-names-column" minWidth="80"/>
+    <VBox fx:id="fieldNamesColumn" styleClass="field-names-column" minWidth="80" />
 
     <ScrollPane fx:id="fieldValuesScrollPane" styleClass="shared-scroll-pane" HBox.hgrow="ALWAYS"
         hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" minHeight="115">
@@ -28,7 +28,7 @@
   </HBox>
 
   <ScrollPane fx:id="tagsScrollPane" styleClass="shared-scroll-pane, tags-scroll-pane"
-      fitToWidth="true" fitToHeight="false" hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED" minHeight="40">
+      fitToWidth="true" fitToHeight="false" hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED">
     <FlowPane fx:id="tags" styleClass="tags-flow-pane" />
   </ScrollPane>
 
