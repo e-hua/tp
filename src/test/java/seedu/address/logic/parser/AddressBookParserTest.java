@@ -50,7 +50,7 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_add() throws Exception {
-        Person person = new PersonBuilder().build();
+        Person person = new PersonBuilder().withTelegram("tg_1234").build();
         AddCommand command = (AddCommand) parser.parseCommand(PersonUtil.getAddCommand(person));
         assertEquals(new AddCommand(person), command);
     }
@@ -71,9 +71,17 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_edit() throws Exception {
         Person person = new PersonBuilder().build();
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
-        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withName("Amy Bee")
+                .withPhone("85355255")
+                .withEmail("amy@gmail.com")
+                .withAddress("123, Jurong West Ave 6, #08-111")
+                .build();
+
+        String commandString = EditCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + " "
+                + PersonUtil.getEditPersonDescriptorDetails(descriptor);
+
+        EditCommand command = (EditCommand) parser.parseCommand(commandString);
         assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
     }
 
