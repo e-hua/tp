@@ -180,11 +180,17 @@ Examples:
 
 ### Locating persons by name: `find`
 
-Finds persons whose attributes matches any of the given keywords on every field specified in the command flags.
+Finds persons whose attributes matches at least one of the given keywords for every field specified in the command flags.
 
 Format: `find [n/NAME]… [p/PHONE_NUMBER]… [e/EMAIL]… [a/ADDRESS]… [tg/TELEGRAM_HANDLE]… [t/TAG]… [c/COURSE_CODE]… [tut/TUTORIAL_GROUP]…`
 
-* Multiple fields can be specified here, persons matching all the predicates will be returned (i.e. `AND` search).
+* Although all fields are optional, the `find` command still needs at least one field to execute.
+* Persons matching at least one keyword for a given field will be returned 
+(i.e., `OR` search **within** a single field).
+e.g., `find n/alex n/david` will return `Alex Yeoh`, `David Li`.
+* Multiple fields can be specified here; persons must match all specifie field predicates to be returned 
+(i.e., `AND` search **across** different fields).
+e.g., `find n/John c/CS2103T` will return persons with "John" in their name **AND** enrolled in "CS2103T".
 * The search is case-insensitive. e.g `n/hans` will match `Hans`
 * The order of the flags does not matter. e.g. `find n/Alex c/CS2103T` 
 will have the same effect as `find c/CS2103T n/Alex`
@@ -199,7 +205,8 @@ Examples:
 * `find n/John` returns `john` and `John Doe`
 * `find n/alex n/david` returns `Alex Yeoh`, `David Li`
 * `find c/CS2103T tut/T01` returns all students in CS2103T tutorial group T01.
-* `find p/807 e/alex` returns all students with `807` in their phone number and has `alex` in their email address.
+* `find p/807 e/alex` returns all students with `807` in their phone number **AND** `alex` in their email address.
+* `find n/alex n/david t/friends t/buddy` returns students whose name contains "alex" **OR** "david", **AND** who are tagged as "friends" **OR** "buddy".
 
   ![result for 'find n/alex n/david'](images/findAlexDavidResult.png)
 
@@ -284,7 +291,7 @@ Action | Format, Examples
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find** | `find [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [tg/TELEGRAM_HANDLE] [t/TAG] [c/COURSE_CODE] [tut/TUTORIAL_GROUP]` <br> e.g., `find p/807 e/alex`
+**Find** | `find [n/NAME]… [p/PHONE_NUMBER]… [e/EMAIL]… [a/ADDRESS]… [tg/TELEGRAM_HANDLE]… [t/TAG]… [c/COURSE_CODE]… [tut/TUTORIAL_GROUP]…` <br> e.g., `find p/807 e/alex`
 **View** | `view INDEX`<br> e.g., `view 1`
 **List** | `list`
 **Help** | `help`
