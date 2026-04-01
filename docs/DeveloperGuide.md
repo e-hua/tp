@@ -421,7 +421,41 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-* 2a. Student is not currently enrolled in the given course.
+* 2a. Student is not enrolled in the given course.
+
+    * 2a1. TAConnect informs TA that the student is not enrolled in the given course.
+
+      Use case ends.
+
+<ins>**Use case: UC09 - Mark Attendance**<ins>
+
+**Preconditions:** TA has at least one contact in their list.
+
+**Guarantees:** The specified student's attendance is marked for the given course and week only if the input is valid.
+
+**MSS**
+
+1. TA requests to mark attendance for a specific contact for a given course and week.
+2. TAConnect validates the input.
+3. TAConnect marks the attendance, displays a success message, and shows the updated contact details.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. TAConnect detects an invalid or out-of-range contact index.
+
+    * 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
+
+      Use case ends.
+
+* 1b. TAConnect detects other invalid input (e.g. missing course code, missing week number, week number out of range 1-13).
+
+    * 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
+
+      Use case ends.
+
+* 2a. Student is not enrolled in the given course.
 
     * 2a1. TAConnect informs TA that the student is not enrolled in the given course.
 
