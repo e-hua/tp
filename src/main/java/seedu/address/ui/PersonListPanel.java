@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
@@ -19,8 +20,9 @@ public class PersonListPanel extends UiPart<Region> {
     private static final String FXML = "PersonListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
 
-    // True when a PersonCard is selected by a mouse click
-    private boolean isMouseClick = false;
+    // True if the current selection was triggered manually via mouse click or keyboard.
+    // False if the selection was triggered via a user command.
+    private boolean isManualSelection = false;
 
     @FXML
     private ListView<Person> personListView;
@@ -36,7 +38,11 @@ public class PersonListPanel extends UiPart<Region> {
         logger.fine("Initializing PersonListPanel with " + personList.size() + " contacts in the list.");
 
         personListView.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-            isMouseClick = true;
+            isManualSelection = true;
+        });
+
+        personListView.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            isManualSelection = true;
         });
 
         personListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
@@ -45,13 +51,13 @@ public class PersonListPanel extends UiPart<Region> {
 
     /**
      * Scrolls the {@code PersonListPanel} to show and select the given {@code Person}.
-     * This method should only be triggered by user-commands and not by mouse clicks.
+     * This method should only be triggered by user-command and not by manual interaction (mouse or keyboard).
      *
      * @param person the {@code Person} to scroll to and select.
      */
     public void scrollToPerson(Person person) {
         assert person != null : "The person being scrolled to in PersonListPanel must not be null";
-        assert !isMouseClick : "scrollToPerson should not be called by a mouse click";
+        assert !isManualSelection : "scrollToPerson should not be called by a mouse click";
 
         int index = personListView.getItems().indexOf(person);
 
@@ -62,17 +68,17 @@ public class PersonListPanel extends UiPart<Region> {
     }
 
     /**
-     * Returns true if the selection was triggered by a mouse click.
+     * Returns true if the selection was triggered manually by a mouse click or keyboard press.
      */
-    public boolean isMouseClick() {
-        return isMouseClick;
+    public boolean isManualSelection() {
+        return isManualSelection;
     }
 
     /**
-     * Marks the current selection was not due to a mouse click.
+     * Marks the current selection as not triggered manually (i.e. triggered via commands).
      */
-    public void resetMouseClick() {
-        isMouseClick = false;
+    public void resetManualSelection() {
+        isManualSelection = false;
     }
 
     /**
@@ -88,10 +94,6 @@ public class PersonListPanel extends UiPart<Region> {
                 setText(null);
             } else {
                 PersonCard card = new PersonCard(person, getIndex() + 1);
-                card.getRoot().addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-                    getListView().getSelectionModel().select(getIndex());
-                    event.consume();
-                });
                 setGraphic(card.getRoot());
             }
         }
