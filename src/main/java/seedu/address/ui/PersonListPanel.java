@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
@@ -103,23 +104,48 @@ public class PersonListPanel extends UiPart<Region> {
      */
     private void trackKeyboardPresses() {
         personListView.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            switch (event.getCode()) {
-            case UP:
-            case DOWN:
-            case PAGE_UP:
-            case PAGE_DOWN:
-            case HOME:
-            case END:
-                isManualSelection = true;
-                break;
 
-            default:
+            int listSize = personListView.getItems().size();
+            int currentIndex = personListView.getSelectionModel().getSelectedIndex();
+
+            // Detect pressing of any special keys to mark isManualSelection false
+            boolean isSpecialKeyPressed =
+                    event.isShiftDown() || event.isControlDown() || event.isAltDown() || event.isMetaDown();
+
+            // No possible changes in selected person or special keys pressed
+            if (currentIndex == -1 || listSize <= 1 || isSpecialKeyPressed) {
                 isManualSelection = false;
-                break;
+                return;
             }
+
+            int targetIndex = calculateTargetIndex(listSize, currentIndex, event.getCode());
+
+            // Only keyboard press that changes the index of selected person counts as manual selection
+            isManualSelection = (targetIndex != currentIndex);
         });
     }
 
+    /**
+     * Calculate the index of the person reached after the keyboard press is processed.
+     */
+    private int calculateTargetIndex(int listSize, int currentIndex, KeyCode key) {
+        switch (key) {
+        case UP, PAGE_UP:
+            return Math.max(currentIndex - 1, 0);
+
+        case DOWN, PAGE_DOWN:
+            return Math.min(currentIndex + 1, listSize - 1);
+
+        case HOME:
+            return 0;
+
+        case END:
+            return listSize - 1;
+
+        default:
+            return currentIndex;
+        }
+    }
 
     /**
      * Scrolls the {@code PersonListPanel} to show and select the given {@code Person}.
