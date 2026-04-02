@@ -53,7 +53,11 @@ public class PersonListPanel extends UiPart<Region> {
         personListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 lastShownIndex = personListView.getSelectionModel().getSelectedIndex();
+
+                logger.fine("Person selected in personListView changes to "
+                        + newValue.getName().fullName + " at index: " + lastShownIndex);
             }
+
             onPersonSelected.accept(newValue);
         });
     }
@@ -71,23 +75,25 @@ public class PersonListPanel extends UiPart<Region> {
                 node = node.getParent();
             }
 
-            if (node instanceof ListCell) {
-                // Safe to suppress as all cells in the PersonListView are ListCell<Person>
-                @SuppressWarnings("unchecked")
-                ListCell<Person> cell = (ListCell<Person>) node;
-
-                // Clicking empty space or scrollbar does not change the selected person
-                if (cell.getItem() == null) {
-                    isManualSelection = false;
-                    return;
-                }
-
-                int currentClickedIndex = cell.getIndex();
-                int lastClickedIndex = personListView.getSelectionModel().getSelectedIndex();
-
-                // Only clicking different PersonCard is considered as a manual selection
-                isManualSelection = (currentClickedIndex != lastClickedIndex);
+            if (!(node instanceof ListCell)) {
+                return;
             }
+
+            // Safe to suppress as all cells in the PersonListView are ListCell<Person>
+            @SuppressWarnings("unchecked")
+            ListCell<Person> cell = (ListCell<Person>) node;
+
+            // Clicking empty space or scrollbar does not change the selected person
+            if (cell.getItem() == null) {
+                isManualSelection = false;
+                return;
+            }
+
+            int currentClickedIndex = cell.getIndex();
+            int lastClickedIndex = personListView.getSelectionModel().getSelectedIndex();
+
+            // Only clicking different PersonCard is considered as a manual selection
+            isManualSelection = (currentClickedIndex != lastClickedIndex);
         });
     }
 
@@ -108,13 +114,16 @@ public class PersonListPanel extends UiPart<Region> {
      */
     public void scrollToPerson(Person person) {
         assert person != null : "The person being scrolled to in PersonListPanel must not be null";
-        assert !isManualSelection : "scrollToPerson should not be called by a mouse click";
+        assert !(isManualSelection) : "scrollToPerson should not be called by mouse click or keyboard press";
 
         int index = personListView.getItems().indexOf(person);
 
         if (index >= 0) {
             personListView.layout();
             personListView.getSelectionModel().select(index);
+
+            logger.fine("By commands input, scrolling to person: " + person.getName().fullName
+                    + " at index: " + index);
 
             // Scroll to show the last PersonCard fully
             int scrollIndex = (index == personListView.getItems().size() - 1) ? index + 1 : index;
@@ -128,6 +137,12 @@ public class PersonListPanel extends UiPart<Region> {
     public void clearSelection() {
         personListView.getSelectionModel().clearSelection();
         personListView.scrollTo(Math.max(lastShownIndex, 0));
+
+        assert lastShownIndex >= -1 && (lastShownIndex < personListView.getItems().size())
+                : "lastShownIndex must be between -1 and the number of persons in personListView";
+
+        logger.fine("Cleared person selection successfully and "
+                + "scrolled to last shown index of " + lastShownIndex);
     }
 
     /**
@@ -155,15 +170,15 @@ public class PersonListPanel extends UiPart<Region> {
             if (empty || person == null) {
                 setGraphic(null);
                 setText(null);
-            } else {
-                PersonCard card = new PersonCard(person, getIndex() + 1, getListView());
-
-                card.getRoot().addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-                    getListView().getSelectionModel().select(getIndex());
-                });
-
-                setGraphic(card.getRoot());
+                return;
             }
+
+            PersonCard card = new PersonCard(person, getIndex() + 1, getListView());
+            card.getRoot().addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                getListView().getSelectionModel().select(getIndex());
+            });
+
+            setGraphic(card.getRoot());
         }
     }
 

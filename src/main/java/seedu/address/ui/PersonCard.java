@@ -60,18 +60,10 @@ public class PersonCard extends UiPart<Region> {
 
         assert listView != null : "ListView must not be null";
 
-        // Keep keyboard focus away from the ScrollPane of tutInfos
-        tutInfosScrollPane.setFocusTraversable(false);
-        tutInfosContainer.setFocusTraversable(false);
+        preventScrollPaneFocusing(listView);
 
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
-
-        // Prevent the ScrollPane from shifting focus after mouseclick
-        tutInfosScrollPane.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-            event.consume();
-            listView.requestFocus();
-        });
 
         fieldsContainer.getChildren().addAll(
                 new PersonCardField("Email", person.getDisplayEmail()).getRoot(),
@@ -90,4 +82,18 @@ public class PersonCard extends UiPart<Region> {
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
+    /**
+     * Maintains keyboard focus on the listview away from tutInfosScrollPane when it is clicked.
+     */
+    private void preventScrollPaneFocusing(ListView<Person> listView) {
+
+        tutInfosScrollPane.setFocusTraversable(false);
+        tutInfosContainer.setFocusTraversable(false);
+
+        tutInfosScrollPane.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            event.consume();
+            listView.requestFocus();
+        });
+
+    }
 }
