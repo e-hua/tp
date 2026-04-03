@@ -2,63 +2,66 @@
 layout: page
 title: Developer Guide
 ---
-* Table of Contents
-{:toc}
 
---------------------------------------------------------------------------------------------------------------------
+- Table of Contents
+  {:toc}
+
+---
 
 ## **Acknowledgements**
 
-* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+- {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
 
---------------------------------------------------------------------------------------------------------------------
+---
 
 ## **Setting up, getting started**
 
 Refer to the guide [_Setting up and getting started_](SettingUp.md).
 
---------------------------------------------------------------------------------------------------------------------
+---
 
 ## **Design**
 
 <div markdown="span" class="alert alert-primary">
 
 :bulb: **Tip:** The `.puml` files used to create diagrams are in this document `docs/diagrams` folder. Refer to the [_PlantUML Tutorial_ at se-edu/guides](https://se-education.org/guides/tutorials/plantUml.html) to learn how to create and edit diagrams.
+
 </div>
 
 ### Architecture
 
 <img src="images/ArchitectureDiagram.png" width="280" />
 
-The ***Architecture Diagram*** given above explains the high-level design of the App.
+The **_Architecture Diagram_** given above explains the high-level design of the App.
 
 Given below is a quick overview of main components and how they interact with each other.
 
 **Main components of the architecture**
 
 **`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
-* At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
-* At shut down, it shuts down the other components and invokes cleanup methods where necessary.
+
+- At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
+- At shut down, it shuts down the other components and invokes cleanup methods where necessary.
 
 The bulk of the app's work is done by the following four components:
 
-* [**`UI`**](#ui-component): The UI of the App.
-* [**`Logic`**](#logic-component): The command executor.
-* [**`Model`**](#model-component): Holds the data of the App in memory.
-* [**`Storage`**](#storage-component): Reads data from, and writes data to, the hard disk.
+- [**`UI`**](#ui-component): The UI of the App.
+- [**`Logic`**](#logic-component): The command executor.
+- [**`Model`**](#model-component): Holds the data of the App in memory.
+- [**`Storage`**](#storage-component): Reads data from, and writes data to, the hard disk.
 
 [**`Commons`**](#common-classes) represents a collection of classes used by multiple other components.
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The _Sequence Diagram_ below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
 
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
 
 Each of the four main components (also shown in the diagram above),
 
-* defines its *API* in an `interface` with the same name as the Component.
-* implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point.
+- defines its _API_ in an `interface` with the same name as the Component.
+- implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point.
 
 For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
 
@@ -78,10 +81,10 @@ The `UI` component uses the JavaFx UI framework. The layout of these UI parts ar
 
 The `UI` component,
 
-* executes user commands using the `Logic` component.
-* listens for changes to `Model` data so that the UI can be updated with the modified data.
-* keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
-* depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
+- executes user commands using the `Logic` component.
+- listens for changes to `Model` data so that the UI can be updated with the modified data.
+- keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
+- depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
 
 ### Logic component
 
@@ -111,28 +114,28 @@ Here are the other classes in `Logic` (omitted from the class diagram above) tha
 <img src="images/ParserClasses.png" width="600"/>
 
 How the parsing works:
-* When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
-* All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
+
+- When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
+- All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 ### Model component
+
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
 <img src="images/ModelClassDiagram.png" width="450" />
 
-
 The `Model` component,
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
-* stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
-* does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
+- stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
+- stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+- stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
+- does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
 <img src="images/BetterModelClassDiagram.png" width="450" />
 
 </div>
-
 
 ### Storage component
 
@@ -141,15 +144,16 @@ The `Model` component,
 <img src="images/StorageClassDiagram.png" width="550" />
 
 The `Storage` component,
-* can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
-* depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
+
+- can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
+- inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
+- depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
 ### Common classes
 
 Classes used by multiple components are in the `seedu.address.commons` package.
 
---------------------------------------------------------------------------------------------------------------------
+---
 
 ## **Implementation**
 
@@ -157,17 +161,17 @@ This section describes some noteworthy details on how certain features are imple
 
 TODO: Add the implementations of some of our features here
 
---------------------------------------------------------------------------------------------------------------------
+---
 
 ## **Documentation, logging, testing, configuration, dev-ops**
 
-* [Documentation guide](Documentation.md)
-* [Testing guide](Testing.md)
-* [Logging guide](Logging.md)
-* [Configuration guide](Configuration.md)
-* [DevOps guide](DevOps.md)
+- [Documentation guide](Documentation.md)
+- [Testing guide](Testing.md)
+- [Logging guide](Logging.md)
+- [Configuration guide](Configuration.md)
+- [DevOps guide](DevOps.md)
 
---------------------------------------------------------------------------------------------------------------------
+---
 
 ## **Appendix: Requirements**
 
@@ -189,7 +193,6 @@ TODO: Add the implementations of some of our features here
 
 **Value proposition**: 
 This product aims to streamline communication from TAs‘ to their students, other TAs, teaching staff,and professors. It achieves this by organizing contacts into courses, tutorial groups and tags. It supports custom contact categories (e.g., Telegram handles), and more searching functionality (e.g., by groups and/or by email etc.). It also makes contacts storing more flexible by only making names mandatory. 
-
 
 ### User stories
 
@@ -222,16 +225,14 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1. TA requests to view their list of all contacts.
 2. TAConnect lists all contacts and displays a success message.
 
-    Use case ends.
+   Use case ends.
 
 **Extensions**
 
-* 2a. No contacts exist.
+- 2a. No contacts exist.
+  - 2a1. TAConnect displays an empty state message.
 
-    * 2a1. TAConnect displays an empty state message.
-
-      Use case ends.
-
+    Use case ends.
 
 <ins>**Use case: UC02 - Add A Contact**</ins>
 
@@ -242,16 +243,15 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1. TA requests to add a contact with a name and any optional details (phone number, email, address, Telegram handle, tags).
 2. TAConnect validates the input.
 3. TAConnect adds the contact, displays a success message, and shows the updated contact list with the new contact's details.
-   
+
    Use case ends.
 
 **Extensions**
 
-* 2a. TAConnect detects invalid input.
+- 2a. TAConnect detects invalid input.
+  - 2a1. TAConnect informs TA of invalid input and displays the correct format with an example.
 
-    * 2a1. TAConnect informs TA of invalid input and displays the correct format with an example.
-
-      Use case ends.
+    Use case ends.
 
 <ins>**Use case: UC03 - Delete A Contact**</ins>
 
@@ -268,17 +268,15 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. TAConnect detects an invalid or out-of-range contact index.
+- 1a. TAConnect detects an invalid or out-of-range contact index.
+  - 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
 
-    * 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
+    Use case ends.
 
-      Use case ends.
+- 1b. TAConnect detects other invalid input.
+  - 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
 
-* 1b. TAConnect detects other invalid input.
-
-    * 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
-
-      Use case ends.
+    Use case ends.
 
 <ins>**Use case: UC04 - Edit A Contact**</ins>
 
@@ -296,17 +294,15 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. TAConnect detects an invalid or out-of-range contact index.
+- 1a. TAConnect detects an invalid or out-of-range contact index.
+  - 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
 
-    * 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
+    Use case ends.
 
-      Use case ends.
+- 1b. TAConnect detects other invalid input (e.g. no fields provided, invalid field values).
+  - 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
 
-* 1b. TAConnect detects other invalid input (e.g. no fields provided, invalid field values).
-
-    * 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
-
-      Use case ends.
+    Use case ends.
 
 <ins>**Use case: UC05 - Search/Filter Contacts**<ins>
 
@@ -323,23 +319,20 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. TA specifies a tutorial group without a course code.
+- 1a. TA specifies a tutorial group without a course code.
+  - 1a1. TAConnect informs TA that a course code is required when filtering by tutorial group.
 
-    * 1a1. TAConnect informs TA that a course code is required when filtering by tutorial group.
+    Use case ends.
 
-      Use case ends.
+- 1b. TAConnect detects other invalid input.
+  - 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
 
-* 1b. TAConnect detects other invalid input.
+    Use case ends.
 
-    * 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
+- 2a. No contacts match the given criteria.
+  - 2a1. TAConnect informs TA that no matching contacts were found.
 
-      Use case ends.
-
-* 2a. No contacts match the given criteria.
-
-    * 2a1. TAConnect informs TA that no matching contacts were found.
-
-      Use case ends.
+    Use case ends.
 
 <ins>**Use case: UC06 - View A Contact**<ins>
 
@@ -356,17 +349,15 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. TAConnect detects an invalid or out-of-range contact index.
+- 1a. TAConnect detects an invalid or out-of-range contact index.
+  - 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
 
-    * 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
+    Use case ends.
 
-      Use case ends.
+- 1b. TAConnect detects other invalid input.
+  - 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
 
-* 1b. TAConnect detects other invalid input.
-
-    * 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
-
-      Use case ends.
+    Use case ends.
 
 <ins>**Use case: UC07 - Enroll A Student**<ins>
 
@@ -384,23 +375,20 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. TAConnect detects an invalid or out-of-range contact index.
+- 1a. TAConnect detects an invalid or out-of-range contact index.
+  - 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
 
-    * 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
+    Use case ends.
 
-      Use case ends.
+- 1b. TAConnect detects other invalid input (e.g. missing course code or tutorial group).
+  - 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
 
-* 1b. TAConnect detects other invalid input (e.g. missing course code or tutorial group).
+    Use case ends.
 
-    * 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
+- 2a. Student is already enrolled in the given course and tutorial group.
+  - 2a1. TAConnect informs TA that the student is already enrolled.
 
-      Use case ends.
-
-* 2a. Student is already enrolled in the given course and tutorial group.
-
-    * 2a1. TAConnect informs TA that the student is already enrolled.
-
-      Use case ends.
+    Use case ends.
 
 <ins>**Use case: UC08 - Unenroll A Student**<ins>
 
@@ -418,23 +406,20 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. TAConnect detects an invalid or out-of-range contact index.
+- 1a. TAConnect detects an invalid or out-of-range contact index.
+  - 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
 
-    * 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
+    Use case ends.
 
-      Use case ends.
+- 1b. TAConnect detects other invalid input (e.g. missing course code, or unnecessarily provided tutorial group).
+  - 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
 
-* 1b. TAConnect detects other invalid input (e.g. missing course code, or unnecessarily provided tutorial group).
+    Use case ends.
 
-    * 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
+- 2a. Student is not enrolled in the given course.
+  - 2a1. TAConnect informs TA that the student is not enrolled in the given course.
 
-      Use case ends.
-
-* 2a. Student is not enrolled in the given course.
-
-    * 2a1. TAConnect informs TA that the student is not enrolled in the given course.
-
-      Use case ends.
+    Use case ends.
 
 <ins>**Use case: UC09 - Mark Attendance**<ins>
 
@@ -452,23 +437,20 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. TAConnect detects an invalid or out-of-range contact index.
+- 1a. TAConnect detects an invalid or out-of-range contact index.
+  - 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
 
-    * 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
+    Use case ends.
 
-      Use case ends.
+- 1b. TAConnect detects other invalid input (e.g. missing course code, missing week number, week number out of range 1-13, unnecessarily provided tutorial group).
+  - 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
 
-* 1b. TAConnect detects other invalid input (e.g. missing course code, missing week number, week number out of range 1-13, unnecessarily provided tutorial group).
+    Use case ends.
 
-    * 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
+- 2a. Student is not enrolled in the given course.
+  - 2a1. TAConnect informs TA that the student is not enrolled in the given course.
 
-      Use case ends.
-
-* 2a. Student is not enrolled in the given course.
-
-    * 2a1. TAConnect informs TA that the student is not enrolled in the given course.
-
-      Use case ends.
+    Use case ends.
 
 <ins>**Use case: UC10 - Unmark Attendance**<ins>
 
@@ -486,23 +468,20 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. TAConnect detects an invalid or out-of-range contact index.
+- 1a. TAConnect detects an invalid or out-of-range contact index.
+  - 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
 
-    * 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
+    Use case ends.
 
-      Use case ends.
+- 1b. TAConnect detects other invalid input (e.g. missing course code, missing week number, week number out of range 1-13, unnecessarily provided tutorial group).
+  - 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
 
-* 1b. TAConnect detects other invalid input (e.g. missing course code, missing week number, week number out of range 1-13, unnecessarily provided tutorial group).
+    Use case ends.
 
-    * 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
+- 2a. Student is not enrolled in the given course.
+  - 2a1. TAConnect informs TA that the student is not enrolled in the given course.
 
-      Use case ends.
-
-* 2a. Student is not enrolled in the given course.
-
-    * 2a1. TAConnect informs TA that the student is not enrolled in the given course.
-
-      Use case ends.
+    Use case ends.
 
 ### Non-Functional Requirements
 
@@ -527,7 +506,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Tutorial/Lab Group**: A specific class grouping of students with a tutorial/lab code (e.g. Tut10, Lab11) of a course assigned to a TA.
 * **Student**: A NUS Computer Science enrolled in a course supported by the TA.
 
---------------------------------------------------------------------------------------------------------------------
+---
 
 ## **Appendix: Instructions for manual testing**
 
@@ -541,41 +520,45 @@ testers are expected to do more *exploratory* testing.
 ### Launch and shutdown
 
 1. Initial launch
-
    1. Download the jar file and copy into an empty folder
 
    1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
 1. Saving window preferences
-
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
    1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
+      Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+### Adding a person
+
+1. Adding a new person with all fields
+   1. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 tg/@johndoe t/student`<br>
+      Expected: A new contact with the specified details is added to the list. Details of the newly added contact shown in the status message.
+
+1. Adding a new person with only mandatory fields
+   1. Test case: `add n/Alex Yeoh`<br>
+      Expected: A new contact with the name "Alex Yeoh" is added to the list. Details of the newly added contact shown in the status message.
+
+1. Adding a person with missing mandatory fields
+   1. Test case: `add p/98765432 e/johnd@example.com`<br>
+      Expected: No person is added. Error details indicating the missing name and the correct command format are shown in the status message.
 
 ### Deleting a person
 
 1. Deleting a person while all persons are being shown
-
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+   1. Prerequisites: List all persons using the `list` command. Multiple persons are displayed.
 
    1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message.
 
    1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+      Expected: No person is deleted. Error details shown in the status message.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
-
 ### Saving data
 
 1. Dealing with missing/corrupted data files
-
    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
-
-1. _{ more test cases …​ }_
