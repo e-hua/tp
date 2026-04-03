@@ -548,6 +548,25 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
+### Adding a person
+
+1. Adding a new person with all fields
+
+   1. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 tg/@johndoe t/student`<br>
+      Expected: A new contact with the specified details is added to the list. Details of the newly added contact shown in the status message.
+
+1. Adding a new person with only mandatory fields
+
+   1. Test case: `add n/Alex Yeoh`<br>
+      Expected: A new contact with the name "Alex Yeoh" is added to the list. Details of the newly added contact shown in the status message.
+
+1. Adding a person with missing mandatory fields
+
+   1. Test case: `add p/98765432 e/johnd@example.com`<br>
+      Expected: No person is added. Error details indicating the missing name and the correct command format are shown in the status message. Status bar remains the same.
+
+1. _{ more test cases …​ }_
+
 ### Deleting a person
 
 1. Deleting a person while all persons are being shown
