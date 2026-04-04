@@ -34,6 +34,14 @@ public class UnenrollCommandParserTest {
     }
 
     @Test
+    public void parse_invalidValue_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnenrollCommand.MESSAGE_USAGE);
+        assertParseFailure(parser, " a c/CS2103T", expectedMessage);
+        assertParseFailure(parser, " 0 c/CS2103T", expectedMessage);
+        assertParseFailure(parser, " -1 c/CS2103T", expectedMessage);
+    }
+
+    @Test
     public void parse_duplicatePrefixes_failure() {
         String expectedMessage = Messages.getErrorMessageForDuplicatePrefixes(PREFIX_COURSE);
         assertParseFailure(parser, " 1 " + PREFIX_COURSE + "CS2103T " + PREFIX_COURSE + "CS2101", expectedMessage);

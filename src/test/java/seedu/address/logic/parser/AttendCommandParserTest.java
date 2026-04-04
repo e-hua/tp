@@ -61,5 +61,9 @@ public class AttendCommandParserTest {
         String expectedMessage = Messages.getErrorMessageForDuplicatePrefixes(PREFIX_WEEK);
         assertParseFailure(parser, " 1 " + PREFIX_COURSE + "CS2103T " + PREFIX_WEEK + "1 "
                 + PREFIX_WEEK + "2", expectedMessage);
+
+        expectedMessage = Messages.getErrorMessageForDuplicatePrefixes(PREFIX_COURSE);
+        assertParseFailure(parser, " 1 " + PREFIX_COURSE + "CS2103T " + PREFIX_COURSE + "CS2101 "
+                + PREFIX_WEEK + "1", expectedMessage);
     }
 }

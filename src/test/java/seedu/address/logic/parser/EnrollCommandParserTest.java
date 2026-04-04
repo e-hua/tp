@@ -43,6 +43,11 @@ public class EnrollCommandParserTest {
     @Test
     public void parse_invalidValue_failure() {
         assertParseFailure(parser, " 1 c/CS2103T! tut/T01", TutInfo.MESSAGE_CONSTRAINTS);
+
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, EnrollCommand.MESSAGE_USAGE);
+        assertParseFailure(parser, " a c/CS2103T tut/T01", expectedMessage);
+        assertParseFailure(parser, " 0 c/CS2103T tut/T01", expectedMessage);
+        assertParseFailure(parser, " -1 c/CS2103T tut/T01", expectedMessage);
     }
 
     @Test
@@ -50,5 +55,9 @@ public class EnrollCommandParserTest {
         String expectedMessage = Messages.getErrorMessageForDuplicatePrefixes(PREFIX_COURSE);
         assertParseFailure(parser, " 1 " + PREFIX_COURSE + "CS2103T " + PREFIX_COURSE + "CS2101 "
                 + PREFIX_TUTORIAL + "T01", expectedMessage);
+
+        expectedMessage = Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TUTORIAL);
+        assertParseFailure(parser, " 1 " + PREFIX_COURSE + "CS2103T " + PREFIX_TUTORIAL + "T01 "
+                + PREFIX_TUTORIAL + "T02", expectedMessage);
     }
 }
