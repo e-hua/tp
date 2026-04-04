@@ -130,7 +130,7 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same email, same telegram handle or same phone number.
+     * Returns true if both persons have the same email/same telegram handle/same phone number.
      * This defines a weaker notion of equality between two persons.
      */
     public boolean isSamePerson(Person otherPerson) {
