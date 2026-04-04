@@ -48,7 +48,7 @@ public class UnsetCommand extends Command {
     public static final String MESSAGE_UNSET_SUCCESS =
             "Unset %1$s (previously: %2$s) for %3$s (person at index %4$s).";
     public static final String MESSAGE_FIELD_ALREADY_MISSING =
-            "Cannot unset %1$s for %2$s (person at index %3$s) because it is already missing.";
+            "Note: %1$s for %2$s at index %3$s is already missing; No changes were made.";
 
     private final Index index;
     private final Prefix fieldPrefix;
@@ -74,10 +74,6 @@ public class UnsetCommand extends Command {
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        if (!isFieldSet(personToEdit, fieldPrefix)) {
-            throw new CommandException(String.format(MESSAGE_FIELD_ALREADY_MISSING,
-                    getDisplayName(fieldPrefix), personToEdit.getName(), index.getOneBased()));
-        }
 
         String previousValue = getDisplayValue(personToEdit, fieldPrefix);
         Person editedPerson = unsetField(personToEdit, fieldPrefix);
@@ -85,6 +81,12 @@ public class UnsetCommand extends Command {
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         model.setPersonToShow(editedPerson);
+
+        // Unsetting an already missing optional field
+        if (!isFieldSet(personToEdit, fieldPrefix)) {
+            return new CommandResult(String.format(MESSAGE_FIELD_ALREADY_MISSING,
+                    getDisplayName(fieldPrefix), personToEdit.getName(), index.getOneBased()));
+        }
 
         return new CommandResult(String.format(MESSAGE_UNSET_SUCCESS,
                 getDisplayName(fieldPrefix), previousValue, personToEdit.getName(), index.getOneBased()));
@@ -136,13 +138,13 @@ public class UnsetCommand extends Command {
     private String getDisplayName(Prefix fieldPrefix) {
         switch (fieldPrefix.getPrefix()) {
         case "p/":
-            return "phone number";
+            return "Phone number";
         case "a/":
-            return "address";
+            return "Address";
         case "tg/":
-            return "telegram";
+            return "Telegram";
         case "t/":
-            return "tag";
+            return "Tag";
         default:
             throw new IllegalArgumentException("Unsupported unset field prefix: " + fieldPrefix);
         }
