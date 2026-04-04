@@ -52,7 +52,7 @@ public class JsonAdaptedPersonTest {
                 new JsonAdaptedPerson(
                         VALID_NAME,
                         "-",
-                        "-",
+                        VALID_EMAIL,
                         "-",
                         "-",
                         VALID_TAGS,
@@ -61,7 +61,7 @@ public class JsonAdaptedPersonTest {
         Person modelPerson = person.toModelType();
         assertEquals(VALID_NAME, modelPerson.getName().fullName);
         assertEquals("-", modelPerson.getDisplayPhone());
-        assertEquals("-", modelPerson.getEmail().toString());
+        assertEquals(VALID_EMAIL, modelPerson.getEmail().toString());
         assertEquals("-", modelPerson.getDisplayAddress());
         assertEquals("-", modelPerson.getDisplayTelegram());
     }

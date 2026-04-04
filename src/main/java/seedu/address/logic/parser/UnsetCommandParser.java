@@ -41,7 +41,7 @@ public class UnsetCommandParser implements Parser<UnsetCommand> {
         // Check for any unsupported prefixes
         List<String> tokens = List.of(args.trim().split("\\s+"));
         for (String token : tokens) {
-            if (token.matches("[a-zA-Z]/.*") && !isSupportedPrefix(token)) {
+            if (token.matches("[a-zA-Z]+/.*") && !isSupportedPrefix(token)) {
                 throw new ParseException(String.format(MESSAGE_INVALID_PREFIX, token,
                         UnsetCommand.MESSAGE_USAGE));
             }
@@ -97,13 +97,13 @@ public class UnsetCommandParser implements Parser<UnsetCommand> {
      * Returns true if the token matches one of the supported prefixes.
      */
     private boolean isSupportedPrefix(String token) {
-        return token.startsWith(PREFIX_NAME.getPrefix()) ||
-            token.startsWith(PREFIX_PHONE.getPrefix()) ||
-            token.startsWith(PREFIX_EMAIL.getPrefix()) ||
-            token.startsWith(PREFIX_ADDRESS.getPrefix()) ||
-            token.startsWith(PREFIX_TELEGRAM.getPrefix()) ||
-            token.startsWith(PREFIX_TAG.getPrefix()) ||
-            token.startsWith(PREFIX_COURSE.getPrefix()) ||
-            token.startsWith(PREFIX_TUTORIAL.getPrefix());
+        return (token.startsWith(PREFIX_NAME.getPrefix()))
+                || (token.startsWith(PREFIX_PHONE.getPrefix()))
+                || (token.startsWith(PREFIX_EMAIL.getPrefix()))
+                || (token.startsWith(PREFIX_ADDRESS.getPrefix()))
+                || (token.startsWith(PREFIX_TELEGRAM.getPrefix()))
+                || (token.startsWith(PREFIX_TAG.getPrefix()))
+                || (token.startsWith(PREFIX_COURSE.getPrefix()))
+                || (token.startsWith(PREFIX_TUTORIAL.getPrefix()));
     }
 }
