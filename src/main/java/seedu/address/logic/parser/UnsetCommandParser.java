@@ -62,6 +62,10 @@ public class UnsetCommandParser implements Parser<UnsetCommand> {
             throw new ParseException(UnsetCommand.MESSAGE_NAME_CANNOT_BE_UNSET);
         }
 
+        if (PREFIX_EMAIL.equals(fieldPrefix)) {
+            throw new ParseException(UnsetCommand.MESSAGE_EMAIL_CANNOT_BE_UNSET);
+        }
+
         Optional<String> fieldValue = argMultimap.getValue(fieldPrefix);
         if (fieldValue.isPresent() && !fieldValue.get().isEmpty()) {
             throw new ParseException(UnsetCommand.MESSAGE_FIELD_VALUE_NOT_ALLOWED);

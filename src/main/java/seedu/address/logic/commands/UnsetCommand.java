@@ -2,7 +2,6 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
@@ -31,19 +30,15 @@ public class UnsetCommand extends Command {
     public static final String COMMAND_WORD = "unset";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Unsets exactly one optional field of the person "
-            + "identified by the index number used in the displayed person list. "
-            + "Use the field prefix with no value.\n"
-            + "Parameters: INDEX (must be a positive integer) "
-            + "[" + PREFIX_PHONE + "] "
-            + "[" + PREFIX_EMAIL + "] "
-            + "[" + PREFIX_ADDRESS + "] "
-            + "[" + PREFIX_TELEGRAM + "] "
-            + "[" + PREFIX_TAG + "]\n"
+            + "identified by the index number used in the displayed person list.\n"
+            + "Parameters: INDEX (must be a positive integer) [OPTIONAL_FIELD_PREFIX]\n"
+            + "Optional fields: " + PREFIX_PHONE + " " + PREFIX_ADDRESS + " " + PREFIX_TELEGRAM + " " + PREFIX_TAG + "\n"
             + "Example: " + COMMAND_WORD + " 1 " + PREFIX_TELEGRAM;
 
     public static final String MESSAGE_NOT_UNSET = "Exactly one field to unset must be provided.";
     public static final String MESSAGE_MULTIPLE_FIELDS = "Only one field can be unset at a time.";
-    public static final String MESSAGE_NAME_CANNOT_BE_UNSET = "Name cannot be unset.";
+    public static final String MESSAGE_NAME_CANNOT_BE_UNSET = "Name is a mandatory field and cannot be unset.";
+    public static final String MESSAGE_EMAIL_CANNOT_BE_UNSET = "Email is a mandatory field and cannot be unset.";
     public static final String MESSAGE_FIELD_VALUE_NOT_ALLOWED =
             "Unset only accepts a field prefix with no value. Example: unset 1 tg/";
     public static final String MESSAGE_UNSET_SUCCESS =
@@ -120,8 +115,6 @@ public class UnsetCommand extends Command {
         switch (fieldPrefix.getPrefix()) {
         case "p/":
             return person.getPhone().isPresent();
-        case "e/":
-            return person.getEmail().isPresent();
         case "a/":
             return person.getAddress().isPresent();
         case "tg/":
@@ -140,8 +133,6 @@ public class UnsetCommand extends Command {
         switch (fieldPrefix.getPrefix()) {
         case "p/":
             return "phone number";
-        case "e/":
-            return "email";
         case "a/":
             return "address";
         case "tg/":
@@ -160,8 +151,6 @@ public class UnsetCommand extends Command {
         switch (fieldPrefix.getPrefix()) {
         case "p/":
             return person.getDisplayPhone();
-        case "e/":
-            return person.getDisplayEmail();
         case "a/":
             return person.getDisplayAddress();
         case "tg/":
@@ -183,9 +172,6 @@ public class UnsetCommand extends Command {
         switch (fieldPrefix.getPrefix()) {
         case "p/":
             return new Person(person.getName(), Optional.empty(), person.getEmail(),
-                    person.getAddress(), person.getTelegram(), person.getTags(), person.getTutInfos());
-        case "e/":
-            return new Person(person.getName(), person.getPhone(), Optional.empty(),
                     person.getAddress(), person.getTelegram(), person.getTags(), person.getTutInfos());
         case "a/":
             return new Person(person.getName(), person.getPhone(), person.getEmail(),
