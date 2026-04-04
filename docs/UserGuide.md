@@ -169,12 +169,10 @@ Format: `unset INDEX FIELD_PREFIX`
 - `unset INDEX t/` removes all existing tags from the person.
 - `unset` cannot remove a student’s enrollment in a course or tutorial. Use `unenroll` for that purpose.
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
+<div markdown="span" class="alert alert-primary">:bulb: **Tips:**<br>
 - If the field is already empty, the command does not change anything.
 - Instead, The app will notify the user that the field is already empty, while still displaying the person’s details.
 </div>
-
-Examples:
 
 - `unset 1 tg/` Unsets the Telegram handle of the 1st person.
 - `unset 2 a/` Unsets the address of the 2nd person.
@@ -195,9 +193,10 @@ Examples:
 - `enroll 1 c/CS2103T tut/T01` enrolls the 1st student into CS2103T tutorial group T01.
 
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-Before proceeding to the next commands, please do **not** include `c/COURSE_CODE` in `unenroll`, `attend`, and `unattend`.<br>
-Each student is associated with **exactly** one tutorial per course, so the tutorial code is handled automatically.
+<div markdown="span" class="alert alert-primary">:bulb: **Tips:**<br>
+
+- Before proceeding to the next commands, please do **not** include `c/COURSE_CODE` in `unenroll`, `attend`, and `unattend`.<br>
+- Each student is associated with **exactly** one tutorial per course, so the tutorial code is handled automatically.
 </div>
 
 ### Unenrolling a person : `unenroll`
@@ -326,12 +325,6 @@ If your changes to the data file makes its format invalid, TAConnect will discar
 Furthermore, certain edits can cause the TAConnect to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
 
-### Archiving data files `[coming in v2.0]`
-
-_Details coming soon ..._
-
----
-
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
@@ -351,16 +344,16 @@ _Details coming soon ..._
 | Action       | Format, Examples                                                                                                                                                                                                |
 | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Add**      | `add n/NAME e/EMAIL [p/PHONE_NUMBER] [a/ADDRESS] [tg/TELEGRAM_HANDLE] [t/TAG]…​` <br> e.g., `add n/James Ho e/jamesho@example.com p/22224444 tg/JamesHo0318 a/123, Clementi Rd, 1234665 t/friend t/colleague` |
-| **Clear**    | `clear`                                                                                                                                                                                                         |
-| **Delete**   | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                                                             |
-| **Edit**     | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [tg/TELEGRAM_HANDLE] [t/TAG]…​`<br> e.g., `edit 2 n/James Lee e/jameslee@example.com`                                                               |
-| **Unset**    | `unset INDEX FIELD_PREFIX`<br> `FIELD_PREFIX` must be exactly one of `p/`, `a/`, `tg/`, or `t/`.<br> e.g., `unset 1 tg/`                                                                                  |
-| **Find**     | `find [n/NAME]… [p/PHONE_NUMBER]… [e/EMAIL]… [a/ADDRESS]… [tg/TELEGRAM_HANDLE]… [t/TAG]… [c/COURSE_CODE]… [tut/TUTORIAL_GROUP]…` <br> e.g., `find p/807 e/alex`                                                 |
-| **View**     | `view INDEX`<br> e.g., `view 1`                                                                                                                                                                                 |
-| **List**     | `list`                                                                                                                                                                                                          |
-| **Help**     | `help`                                                                                                                                                                                                          |
-| **Enroll**   | `enroll INDEX c/COURSE_CODE tut/TUTORIAL_GROUP` <br> e.g., `enroll 1 c/CS2103T tut/T01`                                                                                                                         |
-| **Unenroll** | `unenroll INDEX c/COURSE_CODE` <br> e.g., `unenroll 1 c/CS2103T`                                                                                                                                                |
-| **Attend**   | `attend INDEX c/COURSE_CODE w/WEEK` <br> e.g., `attend 1 c/CS2103T w/1`                                                                                                                                         |
-| **Unattend** | `unattend INDEX c/COURSE_CODE w/WEEK` <br> e.g., `unattend 1 c/CS2103T w/1`                                                                                                                                     |
-| **Exit**     | `exit`                                                                                                                                                                                                          |
+| **Delete**   | `delete INDEX`<br> e.g., `delete 3` |
+| **List**     | `list`   |
+| **Edit**     | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [tg/TELEGRAM_HANDLE] [t/TAG]…​`<br> e.g., `edit 2 n/James Lee e/jameslee@example.com` |
+| **Unset**    | `unset INDEX FIELD_PREFIX`<br> `FIELD_PREFIX` must be exactly one of `p/`, `a/`, `tg/`, or `t/`.<br> e.g., `unset 1 tg/` |
+| **Enroll**   | `enroll INDEX c/COURSE_CODE tut/TUTORIAL_GROUP` <br> e.g., `enroll 1 c/CS2103T tut/T01` |
+| **Unenroll** | `unenroll INDEX c/COURSE_CODE` <br> e.g., `unenroll 1 c/CS2103T`  |
+| **Attend**   | `attend INDEX c/COURSE_CODE w/WEEK` <br> e.g., `attend 1 c/CS2103T w/1` |
+| **Unattend** | `unattend INDEX c/COURSE_CODE w/WEEK` <br> e.g., `unattend 1 c/CS2103T w/1` |
+| **Find**     | `find [n/NAME]… [p/PHONE_NUMBER]… [e/EMAIL]… [a/ADDRESS]… [tg/TELEGRAM_HANDLE]… [t/TAG]… [c/COURSE_CODE]… [tut/TUTORIAL_GROUP]…` <br> e.g., `find p/807 e/alex`       |
+| **View**     | `view INDEX`<br> e.g., `view 1`   |
+| **Help**     | `help`   |
+| **Clear**     | `clear`   |
+| **Exit**     | `exit` |
