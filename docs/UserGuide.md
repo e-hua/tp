@@ -64,6 +64,9 @@ title: User Guide
 - Items with `…`​ after them can be used multiple times including zero times.<br>
   e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 
+- Commands that require an INDEX must specify the index immediately after the command word, **before** any other parameters.<br>
+  e.g. `edit 1 n/John Doe`, `unset 2 tg/`, `enroll 1 c/CS2103T tut/T01`
+
 - Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
@@ -86,7 +89,9 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [tg/TELEGRAM_HANDLE] [t/TAG]…​`
+Format: `add n/NAME e/EMAIL [p/PHONE_NUMBER] [a/ADDRESS] [tg/TELEGRAM_HANDLE] [t/TAG]…​`
+
+- You must provide both the person’s `NAME` and `EMAIL` when adding a new contact.
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
@@ -106,8 +111,8 @@ Deletes the specified person from the address book.
 Format: `delete INDEX`
 
 - Deletes the person at the specified `INDEX`.
-- The index refers to the index number shown in the displayed person list.
-- The index **must be a positive integer** 1, 2, 3, …​
+- The `INDEX` refers to the index number shown in the displayed person list.
+- The `INDEX` **must be a positive integer** 1, 2, 3, …​
 
 Examples:
 
@@ -126,14 +131,23 @@ Edits an existing person in the address book.
 
 Format: `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [tg/TELEGRAM_HANDLE] [t/TAG]…​`
 
-- Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+- Edits the person at the specified `INDEX`. 
+- The `INDEX` refers to the index number shown in the displayed person list. 
+- The `INDEX` **must be a positive integer** 1, 2, 3, …​
 - At least one of the optional fields must be provided.
 - Existing values will be updated to the input values.
-- When editing tags, the existing tags of the person will be replaced.
+- Fields cannot be edited to empty values. Please use the `unset` command to remove a field instead.
+- When editing tags, the existing tags of the person will be replaced. (i.e., new tags will overwrite existing ones, not be added to them).
+- Tags cannot be left empty. Use the `unset` command to remove all tags instead.
+
+<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
+- Fields cannot be edited to empty values and tags cannot be left empty. Please use the `unset` command to remove a field instead.
+</div>
 
 Examples:
 
-- `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
+- `edit 1 p/91234567 e/johndoe@example.com`<br>
+  Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 
 ### Unsetting a field : `unset`
 
