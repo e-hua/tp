@@ -7,6 +7,7 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.UnenrollCommand;
 
 public class UnenrollCommandParserTest {
@@ -24,10 +25,13 @@ public class UnenrollCommandParserTest {
 
     @Test
     public void parse_compulsoryFieldMissing_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnenrollCommand.MESSAGE_USAGE);
+        String expectedGeneralMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnenrollCommand.MESSAGE_USAGE);
 
-        assertParseFailure(parser, " 1", expectedMessage);
+        String expectedInvalidIndexMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                Messages.MESSAGE_INVALID_INDEX + "\n" + UnenrollCommand.MESSAGE_USAGE);
 
-        assertParseFailure(parser, " c/CS2103T", expectedMessage);
+        assertParseFailure(parser, " 1", expectedGeneralMessage);
+
+        assertParseFailure(parser, " c/CS2103T", expectedInvalidIndexMessage);
     }
 }
