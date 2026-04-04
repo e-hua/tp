@@ -132,15 +132,14 @@ public class Person {
     /**
      * Returns true if both persons have the same email, same telegram handle or same phone number.
      * This defines a weaker notion of equality between two persons.
-     * The missing emails are not considered unique.
      */
     public boolean isSamePerson(Person otherPerson) {
-        if (otherPerson == this) {
-            return true;
-        }
-
         if (otherPerson == null) {
             return false;
+        }
+
+        if (otherPerson == this) {
+            return true;
         }
 
         return isSameEmail(otherPerson) || isSameTelegram(otherPerson) || isSamePhone(otherPerson);
