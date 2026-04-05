@@ -328,7 +328,7 @@ TAConnect data are saved in the hard disk automatically after any command that c
 
 TAConnect data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
-<div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
+<div markdown="span" class="alert alert-warning">:exclamation: **Caution:**<br>
 If your changes to the data file makes its format invalid or contains duplicate/corrupted person entries, 
 TAConnect will discard all data and start with an empty data file at the next run. 
 This will effectively clear the whole JSON file. 
