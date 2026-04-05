@@ -2,6 +2,7 @@ package seedu.address.ui;
 
 import java.util.Comparator;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -46,10 +47,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
     private ScrollPane fieldValuesScrollPane;
 
     @FXML
-    private ScrollPane tagsScrollPane;
-
-    @FXML
-    private FlowPane tags;
+    private FlowPane tagsFlowPane;
 
     @FXML
     private ScrollPane courseTutorialsScrollPane;
@@ -68,6 +66,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
         this.person = null;
 
         hideOptionalSections();
+        forwardVerticalScrollUp(nameScrollPane);
         displayDefaultDetails(defaultMessage);
     }
 
@@ -82,8 +81,10 @@ public class PersonDetailsPanel extends UiPart<Region> {
         assert person != null : "Person must not be null";
         this.person = person;
 
-        preventVerticalScroll(nameScrollPane);
-        preventVerticalScroll(fieldValuesScrollPane);
+        // Forward vertical scroll from child scrollpanes to the parent
+        Stream.of(nameScrollPane, fieldValuesScrollPane, courseTutorialsScrollPane)
+                .forEach(this::forwardVerticalScrollUp);
+        
         displayPersonDetails();
     }
 
@@ -103,7 +104,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
         String[] fieldValues = { "", "", "", "" };
         displayFields(fieldValues);
 
-        tags.getChildren().clear();
+        tagsFlowPane.getChildren().clear();
     }
 
     /**
@@ -132,11 +133,11 @@ public class PersonDetailsPanel extends UiPart<Region> {
     private void displayTags() {
         assert person.getTags() != null : "Tags of the person must not be null";
 
-        tags.getChildren().clear();
+        tagsFlowPane.getChildren().clear();
 
         boolean hasTags = !(person.getTags().isEmpty());
-        tagsScrollPane.setVisible(hasTags);
-        tagsScrollPane.setManaged(hasTags);
+        tagsFlowPane.setVisible(hasTags);
+        tagsFlowPane.setManaged(hasTags);
 
         if (!hasTags) {
             logger.fine("No tags to display for " + person.getName().fullName);
@@ -147,7 +148,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
 
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+                .forEach(tag -> tagsFlowPane.getChildren().add(new Label(tag.tagName)));
     }
 
     /**
@@ -269,14 +270,17 @@ public class PersonDetailsPanel extends UiPart<Region> {
     }
 
     /**
-     * Prevents vertical scrolling of a ScrollPane by consuming vertical scroll events.
+     * Prevents vertical scrolling in the {@code ScrollPane} and forwards it to the parent.
      */
-    private void preventVerticalScroll(ScrollPane scrollPane) {
-        // Solution below inspired by https://stackoverflow.com/a/53991807
+    private void forwardVerticalScrollUp(ScrollPane scrollPane) {
         scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
-            if (event.getDeltaY() != 0) {
-                event.consume();
+            if (event.getDeltaY() == 0) {
+                return;
             }
+
+            ScrollEvent e = event.copyFor(scrollPane.getParent(), scrollPane.getParent());
+            scrollPane.getParent().fireEvent(e);
+            event.consume();
         });
     }
 
@@ -287,8 +291,8 @@ public class PersonDetailsPanel extends UiPart<Region> {
         courseTutorialsScrollPane.setVisible(false);
         courseTutorialsScrollPane.setManaged(false);
 
-        tagsScrollPane.setVisible(false);
-        tagsScrollPane.setManaged(false);
+        tagsFlowPane.setVisible(false);
+        tagsFlowPane.setManaged(false);
     }
 
 }
