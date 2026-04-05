@@ -54,7 +54,11 @@ public class UnsetCommandParserTest {
         assertParseFailure(parser, "-1" + TELEGRAM_EMPTY, MESSAGE_INVALID_INDEX_FORMAT);
         assertParseFailure(parser, "0" + TELEGRAM_EMPTY, MESSAGE_INVALID_INDEX_FORMAT);
         assertParseFailure(parser, "1 some random string", MESSAGE_INVALID_INDEX_FORMAT);
-        assertParseFailure(parser, "1 i/ string", MESSAGE_INVALID_INDEX_FORMAT);
+        assertParseFailure(
+                parser,
+                "1 i/ string",
+                String.format(MESSAGE_INVALID_PREFIX, "i/", UnsetCommand.MESSAGE_USAGE)
+        );
     }
 
     @Test
