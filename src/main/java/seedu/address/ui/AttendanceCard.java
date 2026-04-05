@@ -25,14 +25,24 @@ public class AttendanceCard extends UiPart<Region> {
 
     public final boolean[] attendance;
 
+    private final int LEFT_COLUMN_MAX_LABELS = 4;
+    private final int MIDDLE_COLUMN_MAX_LABELS = 4;
+
     @FXML
     private VBox cardPane;
+
     @FXML
     private Label courseCode;
+
     @FXML
     private Label tutorialCode;
+
     @FXML
     private VBox leftColumn;
+
+    @FXML
+    private VBox middleColumn;
+
     @FXML
     private VBox rightColumn;
 
@@ -51,8 +61,11 @@ public class AttendanceCard extends UiPart<Region> {
 
         for (int i = 1; i <= 13; i++) {
             AttendanceCardField field = new AttendanceCardField(i, attendance[i - 1]);
-            if (i <= 6) {
+
+            if (i <= LEFT_COLUMN_MAX_LABELS) {
                 leftColumn.getChildren().add(field.getRoot());
+            } else if (i <= MIDDLE_COLUMN_MAX_LABELS) {
+                middleColumn.getChildren().add(field.getRoot());
             } else {
                 rightColumn.getChildren().add(field.getRoot());
             }
