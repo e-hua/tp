@@ -202,10 +202,9 @@ Examples:
 - `enroll 1 c/CS2103T tut/T01` enrolls the 1st student into CS2103T tutorial group T01.
 
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tips:**<br>
+<div markdown="span" class="alert alert-primary">:bulb: **Note:**<br>
 
-- Before proceeding to the next commands, please do **not** include `c/COURSE_CODE` in `unenroll`, `attend`, and `unattend`.<br>
-- Each student is associated with **exactly** one tutorial per course, so the tutorial code is handled automatically.
+- Remember not to include tut/TUTORIAL_GROUP in unenroll, attend, and unattend (since each student is associated with exactly one tutorial per course, the tutorial code is handled automatically).
 </div>
 
 ### Unenrolling a person : `unenroll`
