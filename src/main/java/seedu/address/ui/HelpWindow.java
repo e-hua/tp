@@ -16,7 +16,22 @@ import seedu.address.commons.core.LogsCenter;
 public class HelpWindow extends UiPart<Stage> {
 
     public static final String USERGUIDE_URL = "https://se-education.org/addressbook-level3/UserGuide.html";
-    public static final String HELP_MESSAGE = "Refer to the user guide: " + USERGUIDE_URL;
+    public static final String HELP_MESSAGE =
+            "Add: add n/NAME e/EMAIL [p/PHONE_NUMBER] [a/ADDRESS] [tg/TELEGRAM_HANDLE] [t/TAG]…\n"
+            + "Delete: delete INDEX\n"
+            + "List: list\n"
+            + "Edit: edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [tg/TELEGRAM_HANDLE] [t/TAG]…\n"
+            + "Unset: unset INDEX FIELD_PREFIX (FIELD_PREFIX must be p/, a/, tg/, or t/.)\n"
+            + "Enroll: enroll INDEX c/COURSE_CODE tut/TUTORIAL_GROUP\n"
+            + "Unenroll: unenroll INDEX c/COURSE_CODE\n"
+            + "Attend: attend INDEX c/COURSE_CODE w/WEEK\n"
+            + "Unattend: unattend INDEX c/COURSE_CODE w/WEEK\n"
+            + "Find: find [n/NAME]… [p/PHONE_NUMBER]… [e/EMAIL]… [a/ADDRESS]… "
+            + "[tg/TELEGRAM_HANDLE]… [t/TAG]… [c/COURSE_CODE]… [tut/TUTORIAL_GROUP]…\n"
+            + "View: view INDEX\n"
+            + "Help: help\n"
+            + "Clear: clear\n"
+            + "Exit: exit";
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
     private static final String FXML = "HelpWindow.fxml";
