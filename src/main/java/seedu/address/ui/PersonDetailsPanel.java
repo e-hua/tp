@@ -43,6 +43,9 @@ public class PersonDetailsPanel extends UiPart<Region> {
     private VBox fieldValuesColumn;
 
     @FXML
+    private ScrollPane fieldValuesScrollPane;
+
+    @FXML
     private ScrollPane tagsScrollPane;
 
     @FXML
@@ -80,6 +83,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
         this.person = person;
 
         preventVerticalScroll(nameScrollPane);
+        preventVerticalScroll(fieldValuesScrollPane);
         displayPersonDetails();
     }
 

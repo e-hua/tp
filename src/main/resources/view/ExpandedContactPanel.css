@@ -60,10 +60,6 @@
     -fx-font-size: 14px;
 }
 
-.fields-container {
-    -fx-padding: 6 0 4 0;
-}
-
 .field-names-column .label {
     -fx-text-fill: #1d1d1d;
     -fx-font-weight: bold;
