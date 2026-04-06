@@ -105,7 +105,7 @@ public class UnsetCommandParser implements Parser<UnsetCommand> {
      */
     private void checkUnsupportedPrefixes(String args) throws ParseException {
         List<String> tokens = List.of(args.trim().split("\\s+"));
-        Set<String> invalidPrefixes = new LinkedHashSet<>(); 
+        Set<String> invalidPrefixes = new LinkedHashSet<>();
 
         for (String token : tokens) {
             if (token.matches("[a-zA-Z]+/.*") && !isSupportedPrefix(token)) {
