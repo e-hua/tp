@@ -45,16 +45,50 @@ public class EditCommandParser implements Parser<EditCommand> {
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
 
-        if (args.trim().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    EditCommand.MESSAGE_INDEX_AND_PREFIX_MISSING + "\n" + EditCommand.MESSAGE_USAGE));
-        }
+        checkEmptyArgs(args);
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
                 args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_TELEGRAM);
 
-        // Check for any unsupported prefixes
+        checkUnsupportedPrefixes(args);
+
+        Index index = checkAndParseIndex(argMultimap.getPreamble());
+
+        // Checks if duplicate prefixes are present
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
+                PREFIX_ADDRESS, PREFIX_TELEGRAM);
+
+        EditPersonDescriptor editPersonDescriptor = createEditPersonDescriptor(argMultimap);
+
+        // Checks if any fields to edit are provided
+        if (!editPersonDescriptor.isAnyFieldEdited()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    EditCommand.MESSAGE_NOT_EDITED + "\n" + EditCommand.MESSAGE_USAGE));
+        }
+
+        return new EditCommand(index, editPersonDescriptor);
+    }
+
+    /**
+     * Checks if the arguments are empty or contain only whitespace.
+     *
+     * @throws ParseException if no input is provided.
+     */
+    private void checkEmptyArgs(String args) throws ParseException {
+        if (args.trim().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    EditCommand.MESSAGE_INDEX_AND_PREFIX_MISSING + "\n" + EditCommand.MESSAGE_USAGE));
+        }
+    }
+
+    /**
+     * Checks for unsupported prefixes are present in the arguments.
+     *
+     * @throws ParseException if any unsupported prefix is found.
+     */
+    private void checkUnsupportedPrefixes(String args) throws ParseException {
         List<String> tokens = List.of(args.trim().split("\\s+"));
+
         for (String token : tokens) {
             if (token.matches("[a-zA-Z]+/.*") && !isSupportedPrefix(token)) {
                 String prefix = token.substring(0, token.indexOf('/') + 1);
@@ -63,18 +97,28 @@ public class EditCommandParser implements Parser<EditCommand> {
                         EditCommand.COMMAND_WORD, EditCommand.MESSAGE_USAGE));
             }
         }
+    }
 
-        Index index;
+    /**
+     * Checks and parses the preamble string into an index.
+     *
+     * @throws ParseException if the index is missing or invalid.
+     */
+    private Index checkAndParseIndex(String preamble) throws ParseException {
         try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
+            return ParserUtil.parseIndex(preamble);
         } catch (ParseException pe) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     MESSAGE_INVALID_INDEX + "\n" + EditCommand.MESSAGE_USAGE), pe);
         }
+    }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
-                PREFIX_ADDRESS, PREFIX_TELEGRAM);
-
+    /**
+     * Creates an {@code EditPersonDescriptor} from the provided {@code ArgumentMultimap}.
+     *
+     * @throws ParseException if any provided field values to edit are invalid.
+     */
+    private EditPersonDescriptor createEditPersonDescriptor(ArgumentMultimap argMultimap) throws ParseException {
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
 
         setFieldIfPresent(argMultimap.getValue(PREFIX_NAME),
@@ -94,12 +138,7 @@ public class EditCommandParser implements Parser<EditCommand> {
 
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
 
-        if (!editPersonDescriptor.isAnyFieldEdited()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    EditCommand.MESSAGE_NOT_EDITED + "\n" + EditCommand.MESSAGE_USAGE));
-        }
-
-        return new EditCommand(index, editPersonDescriptor);
+        return editPersonDescriptor;
     }
 
     /**
