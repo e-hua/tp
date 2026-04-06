@@ -20,7 +20,6 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import seedu.address.commons.core.index.Index;
-import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.UnsetCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -118,7 +117,7 @@ public class UnsetCommandParser implements Parser<UnsetCommand> {
         if (!(invalidPrefixes.isEmpty())) {
             String invalidPrefixesString = String.join(" ", invalidPrefixes);
             throw new ParseException(String.format(MESSAGE_INVALID_PREFIX, invalidPrefixesString,
-                    EditCommand.COMMAND_WORD, EditCommand.MESSAGE_USAGE));
+                    UnsetCommand.COMMAND_WORD, UnsetCommand.MESSAGE_USAGE));
         }
     }
 
