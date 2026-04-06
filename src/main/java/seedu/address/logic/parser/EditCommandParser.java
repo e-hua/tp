@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_INDEX;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_PREFIX;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
@@ -11,6 +12,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -45,17 +47,21 @@ public class EditCommandParser implements Parser<EditCommand> {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
                 args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_TELEGRAM);
 
+        // Check for any unsupported prefixes
+        List<String> tokens = List.of(args.trim().split("\\s+"));
+        for (String token : tokens) {
+            if (token.matches("[a-zA-Z]+/.*") && !isSupportedPrefix(token)) {
+                throw new ParseException(String.format(MESSAGE_INVALID_PREFIX, token,
+                        EditCommand.COMMAND_WORD, EditCommand.MESSAGE_USAGE));
+            }
+        }
+
         Index index;
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(
-                            MESSAGE_INVALID_COMMAND_FORMAT,
-                            MESSAGE_INVALID_INDEX + "\n" + EditCommand.MESSAGE_USAGE
-                    ),
-                    pe
-            );
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    MESSAGE_INVALID_INDEX + "\n" + EditCommand.MESSAGE_USAGE), pe);
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
@@ -111,6 +117,18 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
 
         return Optional.of(ParserUtil.parseTags(tags));
+    }
+
+    /**
+     * Returns true if the token matches one of the supported prefixes.
+     */
+    private boolean isSupportedPrefix(String token) {
+        return (token.startsWith(PREFIX_NAME.getPrefix()))
+                || (token.startsWith(PREFIX_PHONE.getPrefix()))
+                || (token.startsWith(PREFIX_EMAIL.getPrefix()))
+                || (token.startsWith(PREFIX_ADDRESS.getPrefix()))
+                || (token.startsWith(PREFIX_TELEGRAM.getPrefix()))
+                || (token.startsWith(PREFIX_TAG.getPrefix()));
     }
 
 }

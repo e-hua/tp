@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_PREFIX;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
@@ -73,6 +74,17 @@ public class EditCommandParserTest {
     }
 
     @Test
+    public void parse_unsupportedPrefixes_failure() {
+        assertParseFailure(parser, "1 o/",
+                String.format(MESSAGE_INVALID_PREFIX, "o/",
+                EditCommand.COMMAND_WORD, EditCommand.MESSAGE_USAGE));
+
+        assertParseFailure(parser, "1 c/",
+                String.format(MESSAGE_INVALID_PREFIX, "c/",
+                EditCommand.COMMAND_WORD, EditCommand.MESSAGE_USAGE));
+    }
+
+    @Test
     public void parse_invalidPreamble_failure() {
         // negative index
         assertParseFailure(parser, "-5" + NAME_DESC_AMY, MESSAGE_INVALID_INDEX_FORMAT);
@@ -82,9 +94,6 @@ public class EditCommandParserTest {
 
         // invalid arguments being parsed as preamble
         assertParseFailure(parser, "1 some random string", MESSAGE_INVALID_INDEX_FORMAT);
-
-        // invalid prefix being parsed as preamble
-        assertParseFailure(parser, "1 i/ string", MESSAGE_INVALID_INDEX_FORMAT);
     }
 
     @Test
