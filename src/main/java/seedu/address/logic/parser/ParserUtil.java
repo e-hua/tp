@@ -28,15 +28,17 @@ public class ParserUtil {
      * Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the input is invalid, (empty, contains multiple
-     *                        indices, non-numeric, non-integer, zero, or negative)
+     *                        indices, non-numeric, non-integer, zero, or negative).
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
         String trimmedIndexString = oneBasedIndex.trim();
 
         checkMissingIndex(trimmedIndexString);
+        checkAnyPrefix(trimmedIndexString);
         checkMultipleIndices(trimmedIndexString);
-        checkNonInteger(trimmedIndexString);
+        checkSigns(trimmedIndexString);
         checkNonNumeric(trimmedIndexString);
+        checkNonInteger(trimmedIndexString);
 
         int indexValue;
 
@@ -218,8 +220,8 @@ public class ParserUtil {
     /**
     * Checks if the index string is empty.
     *
-    * @param input the trimmed index string
-    * @throws ParseException if index is missing
+    * @param input the trimmed index string.
+    * @throws ParseException if index is missing.
     */
     private static void checkMissingIndex(String input) throws ParseException {
         if (input.isEmpty()) {
@@ -228,10 +230,23 @@ public class ParserUtil {
     }
 
     /**
+     * Checks if the input string contains any prefix (starting with '/').
+     *
+     * @param input the trimmed input string.
+     * @throws ParseException if an unexpected prefix is detected.
+     */
+    public static void checkAnyPrefix(String input) throws ParseException {
+        // If the input contains a slash, we treat it as an unexpected prefix
+        if (input.contains("/")) {
+            throw new ParseException(InvalidIndexMessages.MESSAGE_INDEX_UNEXPECTED_PREFIX);
+        }
+    }
+
+    /**
     * Checks if the index string contains more than one index separated by whitespace.
     *
-    * @param input the trimmed index string
-    * @throws ParseException if multiple indices are present
+    * @param input the trimmed index string.
+    * @throws ParseException if multiple indices are present.
     */
     private static void checkMultipleIndices(String input) throws ParseException {
         String[] indices = input.split("\\s+");
@@ -241,10 +256,35 @@ public class ParserUtil {
     }
 
     /**
+     * Checks the index string for any invalid '+' or extra '-' signs.
+     * Passes single "-" sign check for negativeIndex checking in {@code checkNegativeIndex}.
+     *
+     * @param input the trimmed index string.
+     * @throws ParseException if any invalid sign is found.
+     */
+    private static void checkSigns(String input) throws ParseException {
+        if (input.contains("+") || input.substring(1).contains("-")) {
+            throw new ParseException(InvalidIndexMessages.MESSAGE_INDEX_INVALID_SIGN);
+        }
+    }
+
+    /**
+    * Checks if the index string represents a numeric integer value.
+    *
+    * @param input the trimmed index string.
+    * @throws ParseException if the index string contains non-numeric characters.
+    */
+    private static void checkNonNumeric(String input) throws ParseException {
+        if (!input.matches("[+-]?(\\d+(\\.\\d*)?|\\.\\d+)")) {
+            throw new ParseException(InvalidIndexMessages.MESSAGE_INDEX_NON_NUMERIC);
+        }
+    }
+
+    /**
     * Checks if the index string represents a non-integer.
     *
-    * @param input the trimmed index string
-    * @throws ParseException if the index string contains a decimal point
+    * @param input the trimmed index string.
+    * @throws ParseException if the index string contains a decimal point.
     */
     private static void checkNonInteger(String input) throws ParseException {
         if (input.contains(".")) {
@@ -253,22 +293,10 @@ public class ParserUtil {
     }
 
     /**
-    * Checks if the index string represents a numeric integer value.
-    *
-    * @param input the trimmed index string
-    * @throws ParseException if the index string contains non-numeric characters
-    */
-    private static void checkNonNumeric(String input) throws ParseException {
-        if (!input.matches("-?\\d+")) {
-            throw new ParseException(InvalidIndexMessages.MESSAGE_INDEX_NON_NUMERIC);
-        }
-    }
-
-    /**
     * Checks if the value of integer index is zero.
     *
-    * @param indexValue the value of the integer index
-    * @throws ParseException if the index is zero
+    * @param indexValue the value of the integer index.
+    * @throws ParseException if the index is zero.
     */
     private static void checkZeroIndex(int indexValue) throws ParseException {
         if (indexValue == 0) {
@@ -279,8 +307,8 @@ public class ParserUtil {
     /**
     * Checks if the value of index is negative.
     *
-    * @param indexValue the value of the integer index
-    * @throws ParseException if the index is negative
+    * @param indexValue the value of the integer index.
+    * @throws ParseException if the index is negative.
     */
     private static void checkNegativeIndex(int indexValue) throws ParseException {
         if (indexValue < 0) {
