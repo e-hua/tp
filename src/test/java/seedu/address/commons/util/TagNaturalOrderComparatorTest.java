@@ -41,8 +41,22 @@ public class TagNaturalOrderComparatorTest {
     public void compare_remainingLength() {
         Tag shortTag = new Tag("tag");
         Tag longTag = new Tag("tagLong");
+        Tag sameShortTag = new Tag("tag");
 
         // For tags with same prefix, shorter tags would come first
         assertTrue(comparator.compare(shortTag, longTag) < 0);
+        assertTrue(comparator.compare(longTag, shortTag) > 0);
+        assertTrue(comparator.compare(sameShortTag, shortTag) > 0);
+    }
+
+    @Test
+    public void compare_alphanumericCombined() {
+        Tag tag1 = new Tag("tag95text");
+        Tag tag2 = new Tag("tag95text");
+        Tag tag3 = new Tag("tag95line");
+
+        // Ensure alphabetical order is preserved after numerical ordering
+        assertTrue(comparator.compare(tag1, tag2) == 0);
+        assertTrue(comparator.compare(tag1, tag3) > 0);
     }
 }
