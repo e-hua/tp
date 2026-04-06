@@ -23,7 +23,7 @@ public class TagNaturalOrderComparator implements Comparator<Tag> {
      * @return A negative integer, zero, or positive integer if the first tag is less than,
      *         equal to, or greater than the second tag in natural ordering respectively.
      */
-    private int compareTagNames(String tag1, String tag2) {
+    private static int compareTagNames(String tag1, String tag2) {
         int index1 = 0;
         int index2 = 0;
         int firstTagLength = tag1.length();
@@ -58,7 +58,7 @@ public class TagNaturalOrderComparator implements Comparator<Tag> {
     /**
      * Compares numeric parts as numbers with more leading-zero coming first.
      */
-    private int compareNumericPart(String s1, int startIndex1, String s2, int startIndex2) {
+    private static int compareNumericPart(String s1, int startIndex1, String s2, int startIndex2) {
         String num1 = extractNumber(s1, startIndex1);
         String num2 = extractNumber(s2, startIndex2);
 
@@ -75,7 +75,7 @@ public class TagNaturalOrderComparator implements Comparator<Tag> {
     /**
      * Compares remaining tags lengths, where tag with remaining length will be placed after.
      */
-    private int compareRemainingLengths(int i, int length1, int j, int length2) {
+    private static int compareRemainingLengths(int i, int length1, int j, int length2) {
         if (i < length1) {
             return 1;
         } else if (j < length2) {
@@ -88,7 +88,7 @@ public class TagNaturalOrderComparator implements Comparator<Tag> {
     /**
      * Extracts consecutive digits starting at a given index as a number.
      */
-    private String extractNumber(String s, int index) {
+    private static String extractNumber(String s, int index) {
         int start = index;
         while (index < s.length() && Character.isDigit(s.charAt(index))) {
             index++;
