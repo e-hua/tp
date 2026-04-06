@@ -35,10 +35,18 @@ public class UnsetCommandParserTest {
     private final UnsetCommandParser parser = new UnsetCommandParser();
 
     @Test
+    public void parse_emptyArgs_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                UnsetCommand.MESSAGE_INDEX_AND_PREFIX_MISSING + "\n" + UnsetCommand.MESSAGE_USAGE);
+
+        assertParseFailure(parser, "", expectedMessage); //empty string
+        assertParseFailure(parser, "    ", expectedMessage); //string with only whitespaces
+    }
+
+    @Test
     public void parse_missingParts_failure() {
         assertParseFailure(parser, TELEGRAM_EMPTY, MESSAGE_INVALID_INDEX_FORMAT);
         assertParseFailure(parser, "1", UnsetCommand.MESSAGE_NOT_UNSET);
-        assertParseFailure(parser, "", MESSAGE_INVALID_INDEX_FORMAT);
     }
 
     @Test

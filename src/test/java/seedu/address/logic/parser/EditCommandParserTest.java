@@ -62,15 +62,27 @@ public class EditCommandParserTest {
     private EditCommandParser parser = new EditCommandParser();
 
     @Test
-    public void parse_missingParts_failure() {
+    public void parse_emptyArgs_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                EditCommand.MESSAGE_INDEX_AND_PREFIX_MISSING + "\n" + EditCommand.MESSAGE_USAGE);
+
+        assertParseFailure(parser, "", expectedMessage); //empty string
+        assertParseFailure(parser, "    ", expectedMessage); //string with only whitespaces
+    }
+
+    @Test
+    public void parse_missingIndex_failure() {
         // no index specified
         assertParseFailure(parser, VALID_NAME_AMY, MESSAGE_INVALID_INDEX_FORMAT);
+    }
+
+    @Test
+    public void parse_missingField_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                EditCommand.MESSAGE_NOT_EDITED + "\n" + EditCommand.MESSAGE_USAGE);
 
         // no field specified
-        assertParseFailure(parser, "1", EditCommand.MESSAGE_NOT_EDITED);
-
-        // no index and no field specified
-        assertParseFailure(parser, "", MESSAGE_INVALID_INDEX_FORMAT);
+        assertParseFailure(parser, "1", expectedMessage);
     }
 
     @Test

@@ -35,6 +35,11 @@ public class UnsetCommandParser implements Parser<UnsetCommand> {
     public UnsetCommand parse(String args) throws ParseException {
         requireNonNull(args);
 
+        if (args.trim().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    UnsetCommand.MESSAGE_INDEX_AND_PREFIX_MISSING + "\n" + UnsetCommand.MESSAGE_USAGE));
+        }
+
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
                 args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TELEGRAM,
                 PREFIX_TAG, PREFIX_COURSE, PREFIX_TUTORIAL);
@@ -43,7 +48,9 @@ public class UnsetCommandParser implements Parser<UnsetCommand> {
         List<String> tokens = List.of(args.trim().split("\\s+"));
         for (String token : tokens) {
             if (token.matches("[a-zA-Z]+/.*") && !isSupportedPrefix(token)) {
-                throw new ParseException(String.format(MESSAGE_INVALID_PREFIX, token,
+                String prefix = token.substring(0, token.indexOf('/') + 1);
+
+                throw new ParseException(String.format(MESSAGE_INVALID_PREFIX, prefix,
                         UnsetCommand.COMMAND_WORD, UnsetCommand.MESSAGE_USAGE));
             }
         }

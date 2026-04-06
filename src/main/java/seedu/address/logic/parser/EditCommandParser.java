@@ -44,6 +44,12 @@ public class EditCommandParser implements Parser<EditCommand> {
      */
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
+
+        if (args.trim().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    EditCommand.MESSAGE_INDEX_AND_PREFIX_MISSING + "\n" + EditCommand.MESSAGE_USAGE));
+        }
+
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
                 args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_TELEGRAM);
 
@@ -51,7 +57,9 @@ public class EditCommandParser implements Parser<EditCommand> {
         List<String> tokens = List.of(args.trim().split("\\s+"));
         for (String token : tokens) {
             if (token.matches("[a-zA-Z]+/.*") && !isSupportedPrefix(token)) {
-                throw new ParseException(String.format(MESSAGE_INVALID_PREFIX, token,
+                String prefix = token.substring(0, token.indexOf('/') + 1);
+
+                throw new ParseException(String.format(MESSAGE_INVALID_PREFIX, prefix,
                         EditCommand.COMMAND_WORD, EditCommand.MESSAGE_USAGE));
             }
         }
@@ -87,7 +95,8 @@ public class EditCommandParser implements Parser<EditCommand> {
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
-            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    EditCommand.MESSAGE_NOT_EDITED + "\n" + EditCommand.MESSAGE_USAGE));
         }
 
         return new EditCommand(index, editPersonDescriptor);
