@@ -13,8 +13,13 @@ import seedu.address.model.person.TutInfo;
  * Container for user visible messages.
  */
 public class Messages {
+    public static final String MESSAGE_HELP_INSTRUCTION = "Please type 'help' to see the list of supported commands.";
+    public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command! " + MESSAGE_HELP_INSTRUCTION;
+    public static final String MESSAGE_PARTIAL_MATCHING_COMMAND =
+            "Invalid command word! Extra characters are detected after the command word \"%1$s\".\n"
+            + "Use the correct command word and "
+            + "separate it, index, and each parameter by at least one space.\n" + MESSAGE_HELP_INSTRUCTION;
 
-    public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
     public static final String MESSAGE_INVALID_INDEX = "Index is required and must be a positive integer.";
     public static final String MESSAGE_INDEX_OUT_OF_BOUNDS = "Index exceeds the number of contacts displayed";

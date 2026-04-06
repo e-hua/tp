@@ -1,8 +1,10 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_PARTIAL_MATCHING_COMMAND;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,6 +38,15 @@ public class AddressBookParser {
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
 
+    // List of all currently supported command words.
+    private static final List<String> COMMAND_WORDS = List.of(
+            AddCommand.COMMAND_WORD, DeleteCommand.COMMAND_WORD, ListCommand.COMMAND_WORD,
+            EditCommand.COMMAND_WORD, UnsetCommand.COMMAND_WORD, FindCommand.COMMAND_WORD,
+            EnrollCommand.COMMAND_WORD, UnenrollCommand.COMMAND_WORD, AttendCommand.COMMAND_WORD,
+            UnattendCommand.COMMAND_WORD, ViewCommand.COMMAND_WORD, HelpCommand.COMMAND_WORD,
+            ClearCommand.COMMAND_WORD, ExitCommand.COMMAND_WORD
+    );
+
     /**
      * Parses user input into command for execution.
      *
@@ -56,6 +67,9 @@ public class AddressBookParser {
         // log messages such as the one below.
         // Lower level log messages are used sparingly to minimize noise in the code.
         logger.fine("Command word: " + commandWord + "; Arguments: " + arguments);
+
+        // Checks if the input commandWord starts with any actual commandWord, but is not exactly the same.
+        checkPartialMatchingCommandWord(commandWord);
 
         switch (commandWord) {
 
@@ -104,6 +118,19 @@ public class AddressBookParser {
         default:
             logger.finer("This user input caused a ParseException: " + userInput);
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+        }
+    }
+
+    /**
+     * Checks if the input commandword starts with any command words, but does not exactly match it.
+     */
+    private void checkPartialMatchingCommandWord(String inputCommandWord) throws ParseException {
+        for (String commandWord : COMMAND_WORDS) {
+            if (!(inputCommandWord.equals(commandWord)) && (inputCommandWord.startsWith(commandWord))) {
+                logger.finer("This user input caused a ParseException: " + inputCommandWord);
+
+                throw new ParseException(String.format(MESSAGE_PARTIAL_MATCHING_COMMAND, commandWord));
+            }
         }
     }
 
