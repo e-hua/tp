@@ -13,9 +13,10 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TELEGRAM;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TUTORIAL;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import seedu.address.commons.core.index.Index;
@@ -105,7 +106,7 @@ public class UnsetCommandParser implements Parser<UnsetCommand> {
      */
     private void checkUnsupportedPrefixes(String args) throws ParseException {
         List<String> tokens = List.of(args.trim().split("\\s+"));
-        List<String> invalidPrefixes = new ArrayList<>();
+        Set<String> invalidPrefixes = new LinkedHashSet<>(); 
 
         for (String token : tokens) {
             if (token.matches("[a-zA-Z]+/.*") && !isSupportedPrefix(token)) {
@@ -116,7 +117,6 @@ public class UnsetCommandParser implements Parser<UnsetCommand> {
 
         if (!(invalidPrefixes.isEmpty())) {
             String invalidPrefixesString = String.join(" ", invalidPrefixes);
-            System.out.println(invalidPrefixesString);
             throw new ParseException(String.format(MESSAGE_INVALID_PREFIX, invalidPrefixesString,
                     EditCommand.COMMAND_WORD, EditCommand.MESSAGE_USAGE));
         }
