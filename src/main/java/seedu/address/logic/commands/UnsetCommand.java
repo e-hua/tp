@@ -48,7 +48,7 @@ public class UnsetCommand extends Command {
     public static final String MESSAGE_UNSET_SUCCESS =
             "Successfully unset %1$s (Previously: %2$s) for %3$s at index %4$s.";
     public static final String MESSAGE_FIELD_ALREADY_MISSING =
-            "Note: %1$s for %2$s at index %3$s is already missing; No changes were made.";
+            "Note: %1$s for %2$s at index %3$s is already missing. No changes were made.";
 
     private final Index index;
     private final Prefix fieldPrefix;
