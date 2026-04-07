@@ -1,6 +1,8 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_INDEX;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_INDEX_OR_UNEXPECTED_TEXT;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
@@ -53,23 +55,35 @@ public class EditCommandParserTest {
     private static final String TAG_EMPTY = " " + PREFIX_TAG;
 
     private static final String MESSAGE_INVALID_INDEX_FORMAT =
-            String.format(
-                    MESSAGE_INVALID_COMMAND_FORMAT,
-                    Messages.MESSAGE_INVALID_INDEX + "\n" + EditCommand.MESSAGE_USAGE
-            );
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                MESSAGE_INVALID_INDEX_OR_UNEXPECTED_TEXT + "\n" + EditCommand.MESSAGE_USAGE);
 
     private EditCommandParser parser = new EditCommandParser();
 
     @Test
-    public void parse_missingParts_failure() {
+    public void parse_emptyArgs_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                EditCommand.MESSAGE_INDEX_AND_PREFIX_MISSING + "\n" + EditCommand.MESSAGE_USAGE);
+
+        assertParseFailure(parser, "", expectedMessage); //empty string
+        assertParseFailure(parser, "    ", expectedMessage); //string with only whitespaces
+    }
+
+    @Test
+    public void parse_missingIndex_failure() {
         // no index specified
-        assertParseFailure(parser, VALID_NAME_AMY, MESSAGE_INVALID_INDEX_FORMAT);
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    MESSAGE_INVALID_INDEX + "\n" + EditCommand.MESSAGE_USAGE);
+        assertParseFailure(parser, NAME_DESC_AMY, expectedMessage);
+    }
+
+    @Test
+    public void parse_missingField_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                EditCommand.MESSAGE_NOT_EDITED + "\n" + EditCommand.MESSAGE_USAGE);
 
         // no field specified
-        assertParseFailure(parser, "1", EditCommand.MESSAGE_NOT_EDITED);
-
-        // no index and no field specified
-        assertParseFailure(parser, "", MESSAGE_INVALID_INDEX_FORMAT);
+        assertParseFailure(parser, "1", expectedMessage);
     }
 
     @Test
@@ -80,11 +94,8 @@ public class EditCommandParserTest {
         // zero index
         assertParseFailure(parser, "0" + NAME_DESC_AMY, MESSAGE_INVALID_INDEX_FORMAT);
 
-        // invalid arguments being parsed as preamble
+        // index with invalid arguments being parsed as preamble
         assertParseFailure(parser, "1 some random string", MESSAGE_INVALID_INDEX_FORMAT);
-
-        // invalid prefix being parsed as preamble
-        assertParseFailure(parser, "1 i/ string", MESSAGE_INVALID_INDEX_FORMAT);
     }
 
     @Test

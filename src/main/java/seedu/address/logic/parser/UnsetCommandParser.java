@@ -3,7 +3,7 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_INDEX;
-import static seedu.address.logic.Messages.MESSAGE_INVALID_PREFIX;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_INDEX_OR_UNEXPECTED_TEXT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
@@ -15,7 +15,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TUTORIAL;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.UnsetCommand;
@@ -26,6 +26,11 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class UnsetCommandParser implements Parser<UnsetCommand> {
 
+    private static final Set<Prefix> SUPPORTED_PREFIXES = Set.of(
+            PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
+            PREFIX_TELEGRAM, PREFIX_TAG, PREFIX_COURSE, PREFIX_TUTORIAL
+    );
+
     /**
      * Parses the given {@code String} of arguments in the context of the UnsetCommand
      * and returns an UnsetCommand object for execution.
@@ -34,39 +39,28 @@ public class UnsetCommandParser implements Parser<UnsetCommand> {
      */
     public UnsetCommand parse(String args) throws ParseException {
         requireNonNull(args);
+        checkEmptyArgs(args);
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
-                args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TELEGRAM,
-                PREFIX_TAG, PREFIX_COURSE, PREFIX_TUTORIAL);
+                args, SUPPORTED_PREFIXES.toArray(Prefix[]::new));
 
-        // Check for any unsupported prefixes
-        List<String> tokens = List.of(args.trim().split("\\s+"));
-        for (String token : tokens) {
-            if (token.matches("[a-zA-Z]+/.*") && !isSupportedPrefix(token)) {
-                throw new ParseException(String.format(MESSAGE_INVALID_PREFIX, token,
-                        UnsetCommand.MESSAGE_USAGE));
-            }
-        }
+        checkUnsupportedPrefixes(args);
 
-        Index index;
-        try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    MESSAGE_INVALID_INDEX + "\n" + UnsetCommand.MESSAGE_USAGE), pe);
-        }
+        Index index = checkAndParseIndex(argMultimap.getPreamble());
 
         argMultimap.verifyNoDuplicatePrefixesFor(
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TELEGRAM, PREFIX_TAG);
 
-        List<Prefix> presentPrefixes = Stream.of(
-                        PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                        PREFIX_TELEGRAM, PREFIX_TAG, PREFIX_COURSE, PREFIX_TUTORIAL)
+        List<Prefix> presentPrefixes = SUPPORTED_PREFIXES.stream()
                 .filter(prefix -> argMultimap.getValue(prefix).isPresent())
                 .toList();
 
         if (presentPrefixes.isEmpty()) {
             throw new ParseException(UnsetCommand.MESSAGE_NOT_UNSET);
+        }
+
+        if (presentPrefixes.size() > 1) {
+            throw new ParseException(UnsetCommand.MESSAGE_MULTIPLE_FIELDS);
         }
 
         for (Prefix prefix : presentPrefixes) {
@@ -81,12 +75,7 @@ public class UnsetCommandParser implements Parser<UnsetCommand> {
             }
         }
 
-        if (presentPrefixes.size() > 1) {
-            throw new ParseException(UnsetCommand.MESSAGE_MULTIPLE_FIELDS);
-        }
-
         Prefix fieldPrefix = presentPrefixes.get(0);
-
         Optional<String> fieldValue = argMultimap.getValue(fieldPrefix);
         if (fieldValue.isPresent() && !fieldValue.get().isEmpty()) {
             throw new ParseException(UnsetCommand.MESSAGE_FIELD_VALUE_NOT_ALLOWED);
@@ -96,16 +85,47 @@ public class UnsetCommandParser implements Parser<UnsetCommand> {
     }
 
     /**
-     * Returns true if the token matches one of the supported prefixes.
+     * Checks if the arguments are empty or contain only whitespace.
+     *
+     * @throws ParseException if no input is provided.
      */
-    private boolean isSupportedPrefix(String token) {
-        return (token.startsWith(PREFIX_NAME.getPrefix()))
-                || (token.startsWith(PREFIX_PHONE.getPrefix()))
-                || (token.startsWith(PREFIX_EMAIL.getPrefix()))
-                || (token.startsWith(PREFIX_ADDRESS.getPrefix()))
-                || (token.startsWith(PREFIX_TELEGRAM.getPrefix()))
-                || (token.startsWith(PREFIX_TAG.getPrefix()))
-                || (token.startsWith(PREFIX_COURSE.getPrefix()))
-                || (token.startsWith(PREFIX_TUTORIAL.getPrefix()));
+    private void checkEmptyArgs(String args) throws ParseException {
+        if (args.trim().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    UnsetCommand.MESSAGE_INDEX_AND_PREFIX_MISSING + "\n" + UnsetCommand.MESSAGE_USAGE));
+        }
     }
+
+    /**
+     * Checks whether any unsupported prefixes are present in the arguments.
+     *
+     * @throws ParseException if any unsupported prefix is found.
+     */
+    private void checkUnsupportedPrefixes(String args) throws ParseException {
+        PrefixUtil.checkUnsupportedPrefixes(args, SUPPORTED_PREFIXES,
+                UnsetCommand.COMMAND_WORD, UnsetCommand.MESSAGE_USAGE);
+    }
+
+    /**
+     * Checks and parses the preamble string into an index.
+     *
+     * @throws ParseException if the index is missing or invalid.
+     */
+    private Index checkAndParseIndex(String preamble) throws ParseException {
+        requireNonNull(preamble);
+        String trimmed = preamble.trim();
+
+        if (trimmed.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    MESSAGE_INVALID_INDEX + "\n" + UnsetCommand.MESSAGE_USAGE));
+        }
+
+        try {
+            return ParserUtil.parseIndex(trimmed);
+        } catch (ParseException pe) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    MESSAGE_INVALID_INDEX_OR_UNEXPECTED_TEXT + "\n" + UnsetCommand.MESSAGE_USAGE), pe);
+        }
+    }
+
 }

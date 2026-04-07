@@ -13,10 +13,19 @@ import seedu.address.model.person.TutInfo;
  * Container for user visible messages.
  */
 public class Messages {
+    public static final String MESSAGE_HELP_INSTRUCTION = "Please type 'help' to see the list of supported commands.";
+    public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command! " + MESSAGE_HELP_INSTRUCTION;
+    public static final String MESSAGE_PARTIAL_MATCHING_COMMAND =
+            "Invalid command word! Extra characters are detected after the command word \"%1$s\".\n"
+            + "Use the correct command word and "
+            + "separate it, index, and each parameter by at least one space.\n" + MESSAGE_HELP_INSTRUCTION;
 
-    public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
-    public static final String MESSAGE_INVALID_INDEX = "Index is required and must be a positive integer.";
+    public static final String MESSAGE_INVALID_INDEX =
+            "Index is required and must be a single positive integer.";
+    public static final String MESSAGE_INVALID_INDEX_OR_UNEXPECTED_TEXT =
+            MESSAGE_INVALID_INDEX + " Do not include any extra text or symbols in the index field.";
+
     public static final String MESSAGE_EMPTY_DISPLAYED_LIST = "The current displayed contact list is empty.\n%s";
     public static final String MESSAGE_INDEX_OUT_OF_BOUNDS =
             "Index exceeds the number of contacts displayed currently.";
@@ -24,9 +33,10 @@ public class Messages {
     public static final String MESSAGE_DUPLICATE_FIELDS =
             "Multiple values specified for the following single-valued field(s): ";
     public static final String MESSAGE_PREAMBLE_NOT_EMPTY =
-        "Unexpected text detected before prefixes. Please use the correct format. \n";
+            "Index or unexpected text detected before any valid prefixes. "
+            + "Only field values with prefixes are allowed after 'add'.\n%s";
     public static final String MESSAGE_INVALID_PREFIX =
-        "The prefix \"%1$s\" is not supported!\n%2$s";
+            "For the %2$s command, the following prefix(es) are not supported: %1$s\n%3$s";
     public static final String MESSAGE_TAG_NOTE =
             "\n"
                     + "Note: Tags are case-insensitive and duplicate tags will be automatically filtered "

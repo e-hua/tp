@@ -50,6 +50,10 @@ public class EditCommand extends Command {
             + COMMAND_WORD + " 1 " + PREFIX_EMAIL + "johndoe@example.com "
             + PREFIX_PHONE + "91234567" + PREFIX_TELEGRAM + "johndoe_new";
 
+    public static final String MESSAGE_INDEX_AND_PREFIX_MISSING =
+                "An index and at least one field prefix (e.g., n/, tg/) with a valid value "
+                + "must be provided to edit a person.";
+
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "Email, Telegram handle, and phone number must be unique!\n"

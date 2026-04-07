@@ -36,6 +36,9 @@ public class UnsetCommand extends Command {
             + PREFIX_TELEGRAM + " " + PREFIX_TAG + "\n"
             + "Example: " + COMMAND_WORD + " 1 " + PREFIX_TELEGRAM;
 
+    public static final String MESSAGE_INDEX_AND_PREFIX_MISSING =
+                "An index and exactly one field prefix must be provided to unset a person.";
+
     public static final String MESSAGE_NOT_UNSET = "Exactly one field to unset must be provided.";
     public static final String MESSAGE_MULTIPLE_FIELDS = "Only one field can be unset at a time.";
     public static final String MESSAGE_NAME_CANNOT_BE_UNSET = "Name is a mandatory field and cannot be unset.";
@@ -48,7 +51,7 @@ public class UnsetCommand extends Command {
     public static final String MESSAGE_UNSET_SUCCESS =
             "Successfully unset %1$s (Previously: %2$s) for %3$s at index %4$s.";
     public static final String MESSAGE_FIELD_ALREADY_MISSING =
-            "Note: %1$s for %2$s at index %3$s is already missing; No changes were made.";
+            "Note: %1$s for %2$s at index %3$s is already missing. No changes were made.";
 
     private final Index index;
     private final Prefix fieldPrefix;

@@ -12,4 +12,9 @@ public class InvalidIndexMessages {
     public static final String MESSAGE_INDEX_ZERO = "Index cannot be zero.";
     public static final String MESSAGE_INDEX_NEGATIVE = "Index cannot be negative.";
     public static final String MESSAGE_INDEX_OVERFLOW = "Index exceeds the range of valid integers.";
+    public static final String MESSAGE_INDEX_UNEXPECTED_PREFIX =
+            "The slash for prefix \"/\" is not needed in this command! Please remove it.";
+    public static final String MESSAGE_INDEX_INVALID_SIGN =
+           "'+' or '-' sign detected in index and rejected.";
+
 }
