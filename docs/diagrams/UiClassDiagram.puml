@@ -13,14 +13,11 @@ Class HelpWindow
 Class ResultDisplay
 Class PersonListPanel
 Class PersonCard
-Class PersonCardField
 Class StatusBarFooter
 Class CommandBox
 Class ExpandedContactPanel
 Class PersonDetailsPanel
 Class AttendanceListPanel
-Class AttendanceCard
-Class AttendanceCardField
 }
 
 package Model <<Rectangle>> {
@@ -46,11 +43,8 @@ MainWindow --> "0..1" HelpWindow
 PersonListPanel -down-> "*" PersonCard
 
 ExpandedContactPanel -down-> "1" PersonDetailsPanel
-PersonCard *-down-> "3" PersonCardField
 
 ExpandedContactPanel -down-> "1" AttendanceListPanel
-AttendanceListPanel -down-> "*" AttendanceCard
-AttendanceCard -down-> "13" AttendanceCardField
 
 MainWindow -left-|> UiPart
 
@@ -59,11 +53,8 @@ CommandBox --|> UiPart
 ExpandedContactPanel --|> UiPart
 PersonDetailsPanel --|> UiPart
 AttendanceListPanel --|> UiPart
-AttendanceCard --|> UiPart
-AttendanceCardField --|> UiPart
 PersonListPanel --|> UiPart
 PersonCard --|> UiPart
-PersonCardField --|> UiPart
 StatusBarFooter --|> UiPart
 HelpWindow --|> UiPart
 
