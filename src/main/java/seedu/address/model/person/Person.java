@@ -201,13 +201,7 @@ public class Person {
      * Compares whether two sets of tags are equal under case-sensitive settings.
      */
     private boolean tagsEqualCaseSensitive(Set<Tag> firstTags, Set<Tag> secondTags) {
-        if (firstTags == null && secondTags == null) {
-            return true;
-        }
-
-        if (firstTags == null || secondTags == null) {
-            return false;
-        }
+        requireAllNonNull(firstTags, secondTags);
 
         if (firstTags.size() != secondTags.size()) {
             return false;
