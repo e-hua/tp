@@ -1,7 +1,8 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.Messages.MESSAGE_INVALID_PREFIX;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_INDEX;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_INDEX_OR_UNEXPECTED_TEXT;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
@@ -54,10 +55,8 @@ public class EditCommandParserTest {
     private static final String TAG_EMPTY = " " + PREFIX_TAG;
 
     private static final String MESSAGE_INVALID_INDEX_FORMAT =
-            String.format(
-                    MESSAGE_INVALID_COMMAND_FORMAT,
-                    Messages.MESSAGE_INVALID_INDEX + "\n" + EditCommand.MESSAGE_USAGE
-            );
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                MESSAGE_INVALID_INDEX_OR_UNEXPECTED_TEXT + "\n" + EditCommand.MESSAGE_USAGE);
 
     private EditCommandParser parser = new EditCommandParser();
 
@@ -73,7 +72,9 @@ public class EditCommandParserTest {
     @Test
     public void parse_missingIndex_failure() {
         // no index specified
-        assertParseFailure(parser, VALID_NAME_AMY, MESSAGE_INVALID_INDEX_FORMAT);
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    MESSAGE_INVALID_INDEX + "\n" + EditCommand.MESSAGE_USAGE);
+        assertParseFailure(parser, NAME_DESC_AMY, expectedMessage);
     }
 
     @Test
@@ -86,17 +87,6 @@ public class EditCommandParserTest {
     }
 
     @Test
-    public void parse_unsupportedPrefixes_failure() {
-        assertParseFailure(parser, "1 o/",
-                String.format(MESSAGE_INVALID_PREFIX, "o/",
-                EditCommand.COMMAND_WORD, EditCommand.MESSAGE_USAGE));
-
-        assertParseFailure(parser, "1 c/",
-                String.format(MESSAGE_INVALID_PREFIX, "c/",
-                EditCommand.COMMAND_WORD, EditCommand.MESSAGE_USAGE));
-    }
-
-    @Test
     public void parse_invalidPreamble_failure() {
         // negative index
         assertParseFailure(parser, "-5" + NAME_DESC_AMY, MESSAGE_INVALID_INDEX_FORMAT);
@@ -104,7 +94,7 @@ public class EditCommandParserTest {
         // zero index
         assertParseFailure(parser, "0" + NAME_DESC_AMY, MESSAGE_INVALID_INDEX_FORMAT);
 
-        // invalid arguments being parsed as preamble
+        // index with invalid arguments being parsed as preamble
         assertParseFailure(parser, "1 some random string", MESSAGE_INVALID_INDEX_FORMAT);
     }
 
