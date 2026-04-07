@@ -147,7 +147,7 @@ public class PersonDetailsPanel extends UiPart<Region> {
         logger.fine("Displaying " + person.getTags().size() + " tags for " + person.getName().fullName);
 
         person.getSortedTags().forEach(tag ->
-            tags.getChildren().add(new Label(tag.getTagName())));
+            tagsFlowPane.getChildren().add(new Label(tag.getTagName())));
     }
 
     /**
