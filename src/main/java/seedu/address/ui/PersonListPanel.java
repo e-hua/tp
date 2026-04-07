@@ -177,10 +177,9 @@ public class PersonListPanel extends UiPart<Region> {
      */
     public void clearSelection() {
         personListView.getSelectionModel().clearSelection();
-        personListView.scrollTo(Math.max(lastShownIndex, 0));
+        personListView.scrollTo(Math.max(Math.min(lastShownIndex, 0), personListView.getItems().size() - 1));
 
-        assert lastShownIndex >= -1 && (lastShownIndex < personListView.getItems().size())
-                : "lastShownIndex must be between -1 and the number of persons in personListView";
+
 
         logger.fine("Cleared person selection successfully and "
                 + "scrolled to last shown index of " + lastShownIndex);
