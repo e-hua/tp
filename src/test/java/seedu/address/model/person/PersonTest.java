@@ -7,6 +7,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TELEGRAM_BOB;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
 
 public class PersonTest {
@@ -53,6 +55,29 @@ public class PersonTest {
 
         Person personWithoutTelegram = new PersonBuilder().withoutTelegram().build();
         assertEquals(Person.MISSING_OPTIONAL_FIELD_VALUE, personWithoutTelegram.getDisplayTelegram());
+    }
+
+    @Test
+    public void getSortedTags_modifyList_throwsUnsupportedOperationException() {
+        Person person = new PersonBuilder().withTags("friend", "buddy").build();
+        List<Tag> sortedTags = person.getSortedTags();
+
+        assertThrows(UnsupportedOperationException.class, () -> sortedTags.add(new Tag("newtag")));
+    }
+
+    @Test
+    public void getSortedTags_returnsTagsInNaturalOrder() {
+        Person person = new PersonBuilder()
+                .withTags("tag2", "tag02", "atag", "tag11", "Tag3")
+                .build();
+
+        List<Tag> sortedTags = person.getSortedTags();
+
+        String[] expectedOrder = {"atag", "tag02", "tag2", "Tag3", "tag11"};
+
+        for (int i = 0; i < expectedOrder.length; i++) {
+            assertEquals(expectedOrder[i], sortedTags.get(i).getTagName());
+        }
     }
 
     @Test
@@ -137,6 +162,35 @@ public class PersonTest {
         // different tutInfos -> returns false
         editedAlice = new PersonBuilder(ALICE).withTutInfos(List.of(new TutInfo("CS2109S", "T19"))).build();
         assertFalse(ALICE.equals(editedAlice));
+    }
+
+    @Test
+    public void equals_tagComparision() {
+        // both tags empty -> returns true
+        Person editedAlice = new PersonBuilder(ALICE).withTags().build();
+        Person aliceWithEmptyTags = new PersonBuilder(ALICE).withTags().build();
+        assertTrue(editedAlice.equals(aliceWithEmptyTags));
+
+        // one tags empty, one not empty -> returns false
+        editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_FRIEND).build();
+        assertFalse(editedAlice.equals(aliceWithEmptyTags));
+
+        // different tag sizes -> returns false
+        editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_FRIEND).build();
+        Person aliceWithMultipleTags =
+                new PersonBuilder(ALICE).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND).build();
+        assertFalse(editedAlice.equals(aliceWithMultipleTags));
+
+        // same tags, different case -> returns false
+        editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_FRIEND).build();
+        Person aliceWithCapitalizedTag =
+                new PersonBuilder(ALICE).withTags(VALID_TAG_FRIEND.toUpperCase()).build();
+        assertFalse(editedAlice.equals(aliceWithCapitalizedTag));
+
+        // exactly same tags -> returns true
+        editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_FRIEND).build();
+        Person aliceWithSameTags = new PersonBuilder(ALICE).withTags(VALID_TAG_FRIEND).build();
+        assertTrue(editedAlice.equals(aliceWithSameTags));
     }
 
     @Test

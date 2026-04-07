@@ -9,7 +9,9 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-- {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+- This project is based on the [AddressBook-Level3](https://github.com/se-edu/addressbook-level3) project by the SE-EDU initiative.
+- Parts of the structure and documentation style were adapted from the [SE-EDU project portfolio and documentation guides](https://se-education.org/docs/).
+- Generative AI tools were used to assist with drafting and refining some test cases. All AI-assisted outputs were reviewed, edited, and validated by the team before inclusion in the codebase.
 
 ---
 

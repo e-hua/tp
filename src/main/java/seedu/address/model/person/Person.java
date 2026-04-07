@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.StringUtil;
+import seedu.address.commons.util.TagNaturalOrderComparator;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
 
@@ -110,6 +112,20 @@ public class Person {
     }
 
     /**
+     * Returns an immutable list of the Person's {@code tags}, sorted based on {@code TagNaturalOrderComparator}.
+     * Any attempt to modify this unmodifiable returned list will throw {@code UnsupportedOperationException}.
+     *
+     * @return An unmodifiable, sorted list of {@code Tags}.
+     */
+    public List<Tag> getSortedTags() {
+        List<Tag> sorted = tags.stream()
+                .sorted(new TagNaturalOrderComparator())
+                .collect(Collectors.toList());
+
+        return Collections.unmodifiableList(sorted);
+    }
+
+    /**
      * Returns an immutable tutInfo list, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
@@ -173,6 +189,7 @@ public class Person {
 
     /**
      * Returns true if both persons have the same identity and data fields.
+     * Compares the tags of both persons case-sensitively.
      * This defines a stronger notion of equality between two persons.
      */
     @Override
@@ -192,8 +209,22 @@ public class Person {
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
                 && telegram.equals(otherPerson.telegram)
-                && tags.equals(otherPerson.tags)
+                && tagsEqualCaseSensitive(tags, otherPerson.tags)
                 && tutInfos.equals(otherPerson.tutInfos);
+    }
+
+    /**
+     * Compares whether two sets of tags are equal under case-sensitive settings.
+     */
+    private boolean tagsEqualCaseSensitive(Set<Tag> firstTags, Set<Tag> secondTags) {
+        requireAllNonNull(firstTags, secondTags);
+
+        if (firstTags.size() != secondTags.size()) {
+            return false;
+        }
+
+        return firstTags.stream().allMatch(tag ->
+                secondTags.stream().anyMatch(tag::equalsCaseSensitive));
     }
 
     @Override

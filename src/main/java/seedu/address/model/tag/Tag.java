@@ -33,6 +33,13 @@ public class Tag {
         return test.matches(VALIDATION_REGEX);
     }
 
+    /**
+     * Returns the tag name as a string.
+     */
+    public String getTagName() {
+        return tagName;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -46,6 +53,23 @@ public class Tag {
 
         Tag otherTag = (Tag) other;
         return tagName.equalsIgnoreCase(otherTag.tagName);
+    }
+
+    /**
+     * Checks if the tag name are the same under case-sensitive settings.
+     */
+    public boolean equalsCaseSensitive(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof Tag)) {
+            return false;
+        }
+
+        Tag otherTag = (Tag) other;
+        return tagName.equals(otherTag.tagName);
     }
 
     @Override

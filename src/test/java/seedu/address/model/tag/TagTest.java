@@ -27,6 +27,15 @@ public class TagTest {
     }
 
     @Test
+    public void getTagName() {
+        Tag tag1 = new Tag("Friend");
+        assertEquals("Friend", tag1.getTagName());
+
+        Tag tag2 = new Tag("friend");
+        assertEquals("friend", tag2.getTagName());
+    }
+
+    @Test
     public void equals() {
         Tag tag = new Tag("Friend");
 
@@ -47,6 +56,29 @@ public class TagTest {
 
         // different values -> returns false
         assertFalse(tag.equals(new Tag("Family")));
+    }
+
+    @Test
+    public void equalsCaseSensitive() {
+        Tag tag = new Tag("Friend");
+
+        // same values -> returns true
+        assertTrue(tag.equalsCaseSensitive(new Tag("Friend")));
+
+        // same values different case -> returns false
+        assertFalse(tag.equalsCaseSensitive(new Tag("friend")));
+
+        // same object -> returns true
+        assertTrue(tag.equalsCaseSensitive(tag));
+
+        // null -> returns false
+        assertFalse(tag.equalsCaseSensitive(null));
+
+        // different types -> returns false
+        assertFalse(tag.equalsCaseSensitive(5.0f));
+
+        // different values -> returns false
+        assertFalse(tag.equalsCaseSensitive(new Tag("Family")));
     }
 
     @Test

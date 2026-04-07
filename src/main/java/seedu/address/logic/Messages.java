@@ -26,7 +26,9 @@ public class Messages {
     public static final String MESSAGE_INVALID_INDEX_OR_UNEXPECTED_TEXT =
             MESSAGE_INVALID_INDEX + " Do not include any extra text or symbols in the index field.";
 
-    public static final String MESSAGE_INDEX_OUT_OF_BOUNDS = "Index exceeds the number of contacts displayed";
+    public static final String MESSAGE_EMPTY_DISPLAYED_LIST = "The current displayed contact list is empty.\n%s";
+    public static final String MESSAGE_INDEX_OUT_OF_BOUNDS =
+            "Index exceeds the number of contacts displayed currently.";
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
             "Multiple values specified for the following single-valued field(s): ";
@@ -77,10 +79,8 @@ public class Messages {
 
         builder.append("; Tags: ");
 
-        // Sorting by tagName alphabetically (case-sensitive)
-        person.getTags().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(builder::append);
+        // Display tags in natural alphanumeric order (case insensitive and numbers compared numerically)
+        person.getSortedTags().forEach(builder::append);
 
         return builder.toString();
     }
