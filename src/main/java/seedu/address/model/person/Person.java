@@ -173,6 +173,7 @@ public class Person {
 
     /**
      * Returns true if both persons have the same identity and data fields.
+     * Compares the tags of both persons case-sensitively.
      * This defines a stronger notion of equality between two persons.
      */
     @Override
@@ -192,8 +193,28 @@ public class Person {
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
                 && telegram.equals(otherPerson.telegram)
-                && tags.equals(otherPerson.tags)
+                && tagsEqualCaseSensitive(tags, otherPerson.tags)
                 && tutInfos.equals(otherPerson.tutInfos);
+    }
+
+    /**
+     * Compares whether two sets of tags are equal under case-sensitive settings.
+     */
+    private boolean tagsEqualCaseSensitive(Set<Tag> firstTags, Set<Tag> secondTags) {
+        if (firstTags == null && secondTags == null) {
+            return true;
+        }
+
+        if (firstTags == null || secondTags == null) {
+            return false;
+        }
+
+        if (firstTags.size() != secondTags.size()) {
+            return false;
+        }
+
+        return firstTags.stream().allMatch(tag ->
+                secondTags.stream().anyMatch(tag::equalsCaseSensitive));
     }
 
     @Override
