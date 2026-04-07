@@ -340,6 +340,18 @@ Furthermore, certain edits can cause TAConnect to behave in unexpected ways (e.g
 **Q**: How do I transfer my data to another computer?<br>
 **A**: Install the app on the other computer and overwrite the empty data file it creates with the file that contains the data of your previous TAConnect home folder.
 
+**Q**: Why are only the Name and Email fields mandatory for a contact?<br>
+**A**:A: TAConnect requires only Name and Email when adding a contact, leaving other fields (Phone number, Address, Telegram handle) optional. This keeps the process convenient as TAs can add a contact quickly even without having all their details on hand.
+Email is mandatory because every contact should have at least one way to be reached, and email is typically the most formal and reliable channel for a TA to communicate with a student.
+
+**Q**: What are considered duplicate contacts?<br>
+**A**: TAConnect considers a contact a duplicate if it shares an Email, Phone number, or Telegram handle with an existing contact. All other fields (Name, Address, Tags, Course codes, and Tutorial groups) do not need to be unique, so multiple contacts can share the same values for these.
+Additionally, if a field is absent on one or both contacts, it is never treated as a match, so two contacts without a phone number, for example, are not considered duplicates.
+
+**Q**: Why doesn't the scroll wheel work as expected over some parts of the app?<br>
+**A**: TAConnect prioritises the scroll wheel for scrolling the main content areas up and down. So in some cases, scrolling over a smaller section (e.g. a field that's cut off horizontally) will scroll the main panel instead of that specific section. 
+To scroll within a smaller section, drag the scrollbar directly instead. This ensures that smaller overflow sections don't get in the way of navigating the app smoothly.
+
 ---
 
 ## Known issues
