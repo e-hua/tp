@@ -14,6 +14,7 @@ Class XYZCommandParser
 note left of XYZCommandParser: XYZCommandParser = AddCommandParser, \nFindCommandParser, etc
 Class CliSyntax
 Class ParserUtil
+Class PrefixUtil
 Class ArgumentMultimap
 Class ArgumentTokenizer
 Class Prefix
@@ -34,6 +35,8 @@ XYZCommandParser ..> CliSyntax
 CliSyntax ..> Prefix
 XYZCommandParser ..> ParserUtil
 ParserUtil .down.> Prefix
+XYZCommandParser ..> PrefixUtil
+PrefixUtil .down.> Prefix
 ArgumentTokenizer .down.> Prefix
 XYZCommand -up-|> Command
 note right of XYZCommand: XYZCommand = AddCommand, \nFindCommand, etc
