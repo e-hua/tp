@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_INDEX;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_INDEX_OR_UNEXPECTED_TEXT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
@@ -111,11 +112,19 @@ public class UnsetCommandParser implements Parser<UnsetCommand> {
      * @throws ParseException if the index is missing or invalid.
      */
     private Index checkAndParseIndex(String preamble) throws ParseException {
+        requireNonNull(preamble);
+        String trimmed = preamble.trim();
+
+        if (trimmed.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    MESSAGE_INVALID_INDEX + "\n" + UnsetCommand.MESSAGE_USAGE));
+        }
+
         try {
-            return ParserUtil.parseIndex(preamble);
+            return ParserUtil.parseIndex(trimmed);
         } catch (ParseException pe) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    MESSAGE_INVALID_INDEX + "\n" + UnsetCommand.MESSAGE_USAGE), pe);
+                    MESSAGE_INVALID_INDEX_OR_UNEXPECTED_TEXT + "\n" + UnsetCommand.MESSAGE_USAGE), pe);
         }
     }
 

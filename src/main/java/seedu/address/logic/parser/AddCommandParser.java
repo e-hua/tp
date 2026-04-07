@@ -44,9 +44,6 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
                 args, VALID_PREFIXES.toArray(Prefix[]::new));
-        
-        // Checks for any missing mandatory fields.
-        checkMissingMandatoryFields(argMultimap);
 
         // Checks if there is extra text before first valid prefix.
         if (!argMultimap.getPreamble().isEmpty()) {
@@ -56,6 +53,9 @@ public class AddCommandParser implements Parser<AddCommand> {
         // Checks if any duplicate valid prefixes are present.
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
                 PREFIX_ADDRESS, PREFIX_TELEGRAM);
+
+        // Checks for any missing mandatory fields.
+        checkMissingMandatoryFields(argMultimap);
 
         Person person = createPersonToAdd(argMultimap);
         return new AddCommand(person);

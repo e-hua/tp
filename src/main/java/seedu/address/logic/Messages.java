@@ -21,15 +21,18 @@ public class Messages {
             + "separate it, index, and each parameter by at least one space.\n" + MESSAGE_HELP_INSTRUCTION;
 
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
-    public static final String MESSAGE_INVALID_INDEX = "Index is required and must be a positive integer.";
+    public static final String MESSAGE_INVALID_INDEX =
+            "Index is required and must be a single positive integer.";
+    public static final String MESSAGE_INVALID_INDEX_OR_UNEXPECTED_TEXT =
+            MESSAGE_INVALID_INDEX + " Do not include any extra text or symbols in the index field.";
+
     public static final String MESSAGE_INDEX_OUT_OF_BOUNDS = "Index exceeds the number of contacts displayed";
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
             "Multiple values specified for the following single-valued field(s): ";
     public static final String MESSAGE_PREAMBLE_NOT_EMPTY =
-            "Unexpected text or unsupported prefixes detected before valid prefixes.\n"
-            + "Please refer to the command format and example below. "
-            + "Do not supply index, values without prefix or special characters.\n%s";
+            "Index or unexpected text detected before any valid prefixes. "
+            + "Only field values with prefixes are allowed after 'add'.\n%s";
     public static final String MESSAGE_INVALID_PREFIX =
             "For the %2$s command, the following prefix(es) are not supported: %1$s\n%3$s";
     public static final String MESSAGE_TAG_NOTE =
