@@ -2,7 +2,7 @@
     -fx-background-color: #cacaca;
     -fx-border-color: #818181;
     -fx-border-width: 5;
-    -fx-padding: 15 14 15 16;
+    -fx-padding: 15 14 15 14;
 }
 
 #expandedContactScrollPane.contact-selected {
