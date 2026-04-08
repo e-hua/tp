@@ -58,6 +58,9 @@ This app enables TAs to **quickly and efficiently** organise contacts into cours
 
 **:information_source: Notes about the command format:**<br>
 
+- Command words and prefixes are case-insensitive.<br>
+  e.g. `EDIT 2 n/John` or `edit 2 N/John` are both valid.
+
 - Always separate the `command word`, the `INDEX`, and each `field` (if required) with at least one space.<br>
   Multiple spaces are allowed, but do not attach them directly to each other.<br>
   e.g. `enroll1c/CS2103Ttut/T01` is incorrect usage.
@@ -344,7 +347,7 @@ Furthermore, certain edits can cause TAConnect to behave in unexpected ways (e.g
 Email is mandatory because every contact should have at least one way to be reached, and email is typically the most formal and reliable channel for a TA to communicate with a student.
 
 **Q**: What are considered duplicate contacts?<br>
-**A**: TAConnect considers a contact a duplicate if it shares an Email, Phone number, or Telegram handle with an existing contact. All other fields (Name, Address, Tags, Course codes, and Tutorial groups) do not need to be unique, so multiple contacts can share the same values for these.
+**A**: TAConnect considers a contact a duplicate if it shares an Email, Phone number, or Telegram handle with an existing contact. Email and Telegram comparisons are case-insensitive. <br>All other fields (Name, Address, Tags, Course codes, and Tutorial groups) do not need to be unique, so multiple contacts can share the same values for these.
 Additionally, if a field is absent on one or both contacts, it is never treated as a match, so two contacts without a phone number, for example, are not considered duplicates.
 
 **Q**: Why doesn't the scroll wheel work as expected over some parts of the app?<br>
@@ -356,7 +359,7 @@ To scroll within a smaller section, drag the scrollbar directly instead. This en
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+2. **If you minimise the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimised, and no new Help Window will appear. The remedy is to manually restore the minimised Help Window.
 
 ---
 
