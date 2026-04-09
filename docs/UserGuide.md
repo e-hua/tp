@@ -26,7 +26,10 @@ This app enables TAs to **quickly and efficiently** organise contacts into cours
 
 1. Copy the file to the folder you want to use as the _home folder_ for your TAConnect.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar TAConnect.jar` command to run the application.
+1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar TAConnect.jar` command to run the application.<br>
+   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.
+
+   ![Ui](images/Ui.png)
 
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
@@ -185,8 +188,12 @@ Format: `unset INDEX FIELD_PREFIX`
 Examples:
 
 - `unset 1 tg/` Unsets the Telegram handle of the 1st person.
-- `unset 2 a/` Unsets the address of the 2nd person.
 - `unset 3 t/` Removes all tags from the 3rd person.
+
+
+Screenshot below illustrates that `unset 3 p/` command successfully removed the phone number of the contact at index 3 (Charlotte Oliveiro). The UI confirms that the field is now empty.
+
+![result for 'unset 3 p/'](images/UnsetResult.png)
 
 ### Enrolling a person : `enroll`
 
@@ -238,6 +245,10 @@ Examples:
 
 - `attend 1 c/CS2103T w/1` marks the attendance of the 1st student for CS2103T in Week 1.
 - `attend 2 c/CS2101 w/10` marks the attendance of the 2nd student for CS2101 in Week 10.
+
+
+Screenshot below: The UI shows that the student’s attendance for Weeks 5 and 6 has been successfully marked.
+![result for attending for week 5 and 6](images/AttendResult.png)
 
 ### Unmarking attendance : `unattend`
 
