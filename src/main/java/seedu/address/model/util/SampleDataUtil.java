@@ -43,7 +43,7 @@ public class SampleDataUtil {
 
             createPerson("Roy Balakrishnan", "92624417", "royb@example.com", null,
                     null, getTagSet("lowAttendance"), createTutInfoList(new String[]{"CS2101", "T02"})),
-            
+
             createPerson("Alicia Tan Ai Ling", null, "alicia.tan@u.nus.edu", null,
             "@aliciatl", getTagSet("ActiveParticipant"), createTutInfoList(new String[]{"CS2103T", "T03"}))
         };
