@@ -181,7 +181,7 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 * is reasonably comfortable using CLI apps
 
 **Value proposition**:
-This product aims to streamline communication from TAs‘ to their students, other TAs, teaching staff,and professors. It achieves this by organizing contacts into courses, tutorial groups and tags. It supports custom contact categories (e.g., Telegram handles), and more searching functionality (e.g., by groups and/or by email etc.). It also makes contacts storing more flexible by only making names mandatory. 
+This product aims to streamline communication from TAs‘ to their students, other TAs, teaching staff,and professors. It achieves this by organizing contacts into courses, tutorial groups and tags. It supports custom contact categories (e.g., Telegram handles), and more searching functionality (e.g., by groups and/or by email etc.). It also makes contacts storing more flexible by only making names and email addresses mandatory. 
 
 ### User stories
 
