@@ -218,8 +218,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-- 2a. No contacts exist.
-  - 2a1. TAConnect displays an empty state message.
+- 1a. No contacts exist.
+  - 1a1. TAConnect displays an empty state message.
 
     Use case ends.
 
