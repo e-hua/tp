@@ -13,7 +13,7 @@ import seedu.address.commons.core.GuiSettings;
  */
 public class UserPrefs implements ReadOnlyUserPrefs {
 
-    private GuiSettings guiSettings = new GuiSettings();
+    private GuiSettings guiSettings = new GuiSettings(800, 580, 350, 150);
     private Path addressBookFilePath = Paths.get("data" , "addressbook.json");
 
     /**
