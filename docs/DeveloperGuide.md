@@ -605,7 +605,7 @@ testers are expected to do more *exploratory* testing.
    1. Test case: Delete the `addressbook.json` file from `[JAR file location]/data/` if present. Launch the application.<br>
       Expected:
       - The application detects that the data file is missing and launches without any crashes.
-      - A default sample contact list containing 6 persons is automatically loaded.
+      - A default sample contact list containing 7 persons is automatically loaded.
 
 2. Dealing with corrupted data files
    1. Prerequisites: A save file exists at `[JAR file location]/data/addressbook.json`.
