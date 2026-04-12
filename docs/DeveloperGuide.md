@@ -590,8 +590,8 @@ testers are expected to do more *exploratory* testing.
 
     1. Prerequisites:
     - The first person in the contact list is enrolled in the course `CS2103T` and tutorial class `T11`.
-    - If the first person is enrolled in `CS2103T` but in different tutorial class, unenroll the person first using `unenroll 1 c/CS2103T` then followed by `enroll 1 c/CS2103T t/T11`.
-    - If not enrolled into any tutorials of `CS2103T`, enroll the first person using `enroll 1 c/CS2103T t/T11`
+    - If the first person is enrolled in `CS2103T` but in different tutorial class, unenroll the person first using `unenroll 1 c/CS2103T` then followed by `enroll 1 c/CS2103T tut/T11`.
+    - If not enrolled into any tutorials of `CS2103T`, enroll the first person using `enroll 1 c/CS2103T tut/T11`
 
     2. Test case: `enroll 1 CS2103T T19`<br>
        Expected: The first person is not enrolled into `CS2103T T19`. Error details is shown in the status message indicating that the student is already enrolled in `CS2103T`.
