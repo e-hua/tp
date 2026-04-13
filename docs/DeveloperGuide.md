@@ -510,6 +510,26 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ---
 
+## **Appendix: Planned Enhancements**
+
+Team size: `5`
+
+1. **Support non-ASCII characters in person names:** Currently, the application rejects names containing non-ASCII characters, preventing users from entering valid international names such as `José García` and `Müller` which limits usability for users. After this enhancement, commands such as `add n/José García e/jose@nus.edu.sg` will be accepted, and the name will be correctly stored and displayed across the application.
+
+2. **Support international phone number formats:** Currently, the application only accepts phone numbers that consist of digits only and are at least three digits long. This limits valid real-world formats such as international phone numbers with a leading “+” for country codes. We plan to update the validation rules to allow phone numbers with an optional leading “+” while maintaining a valid length restriction. After this enhancement, users will be able to enter internationally valid phone numbers such as `+6512345678`, and have them correctly stored and displayed across the application.
+
+3. **Add swap command for swapping a student’s tutorial group directly:** Currently, changing a student’s tutorial group requires unenrolling the student from the course and enrolling them again with a new tutorial group, which is inconvenient. We plan to introduce a `swap` command to allow direct updating of a student’s tutorial group within an existing course enrollment. After this enhancement, users will be able to swap a student’s tutorial group in a single step to improve usability.
+
+4. **Support multiple tutorial groups per course:** Currently, each course can only be associated with a single tutorial group per student. This is restrictive for modules that have multiple types of classes such as tutorials, labs, or recitations. We plan to extend the system to allow multiple lesson groups to be associated with a single course for each student. After this enhancement, users will be able to record and manage different lesson groups (e.g. tutorials, labs, recitations) under the same course for each student.
+
+5. **Improve flexibility of phone number input validation:** Currently, the application only accepts phone numbers that consist strictly of digits. This can be overly restrictive, as users may naturally enter phone numbers with spaces or additional non-numeric labels for readability. For example, a user might input `1234 5678 (HP) 1111 3333 (Home)`. We plan to relax the validation rules to allow such flexible input formats, including non-digit characters used for formatting to make the application more user-friendly for contact entry.
+
+6. **Improve information visibility for attendance card:** Currently, when the window width is narrow or when course-related information is long, the attendance card in the full details viewing section may not display all content (such as course code, tutorial group, or week information). This results in truncated display due to limited horizontal space. We plan to improve this by ensuring the attendance card layout adapts to available horizontal space so that all fields remain fully visible without being cut off. This will ensure that course, tutorial, and week information can always be fully viewed within the card regardless of window size.
+
+7. **Improve error message for missing spaces before prefixes:** Currently, when users omit spaces before command prefixes, the input may be incorrectly parsed as a single value, leading to misleading error messages. For example, in `add n/John Doe e/johndoe@example.com p/12345678tg/@johnDoe`, the system will treat `12345678tg/@johnDoe` as a single phone number instead of detecting the missing space before the `tg/` prefix. We plan to provide a specific error message indicating the formatting issue (e.g. missing space before the next prefix).<br>At the same time, the parsing logic must avoid incorrectly treating prefix-like patterns within valid field inputs (e.g. `a/Blk 123B #12-34n/2`) as actual command prefixes, as these are part of valid user input rather than command structure. This ensures correct detection of invalid prefix formatting while preserving flexibility in free-text fields instead of blocking them overzealously.
+
+8. **Remove fixed character limit for tags:** Currently, the tag inputs are restricted to a maximum length of 20 characters, which may unnecessarily limit user flexibility. We plan to remove this fixed character limit to allow longer tag inputs. The UI will be adjusted to ensure longer tags are displayed in a readable manner without affecting the overall layout of the application.
+
 ## **Appendix: Instructions for manual testing**
 
 Given below are instructions to test the app manually.
@@ -616,6 +636,34 @@ testers are expected to do more *exploratory* testing.
     2. Test case: `unenroll 1 c/CS2103T`<br>
        Expected: The first person is successfully unenrolled from the course `CS2103T`. The status message shows the student details with the updated course enrollment.
 
+### Marking attendance
+
+1. Marking attendance for a student in a course
+
+    1. Prerequisites: 
+        - At least one person exists in the contact list. Ensure that the student at index 1 is currently enrolled in CS2103T. 
+        - If the student is not enrolled in CS2103T, use the `enroll 1 c/CS2103T tut/T01` command before proceeding.
+    
+    2. Test case: `attend 1 c/CS2103T w/3`<br>
+       Expected: The attendance for Week 3 of CS2103T is successfully marked for the student at index 1. A status message is shown indicating that attendance for Week 3 has been marked.
+    
+    3. Test case: `attend 1 c/CS2103T w/0`<br>
+       Expected: Error details indicating that the week must be between 1 and 13 are shown in the status message. No attendance is marked.
+
+### Unmarking attendance
+
+1. Unmarking attendance for a student in a course
+
+    1. Prerequisites: 
+        - At least one person exists in the contact list. Ensure that the student at index 1 is currently enrolled in CS2103T. 
+        - If the student is not enrolled in CS2103T, use the `enroll 1 c/CS2103T tut/T01` command before proceeding.
+    
+    2. Test case: `unattend 1 c/CS2103T w/3`<br>
+       Expected: The attendance for Week 3 of CS2103T is successfully unmarked for the student at index 1. A status message is shown indicating that attendance for Week 3 has been unmarked.
+    
+    3. Test case: `unattend 1 c/CS2103T w/0`<br>
+       Expected: Error details indicating that the week must be between 1 and 13 are shown in the status message. No attendance is unmarked.
+
 ### Unsetting a person's field
 
 1. Unsetting an optional field of a person
@@ -648,6 +696,20 @@ testers are expected to do more *exploratory* testing.
 
     3. Test case: `unset 1 p/98765432`<br>
        Expected: No changes are made. Error message indicating that `unset` only accepts a field prefix with no value is shown.
+
+### Viewing a person
+
+1. Viewing a person’s full details while all persons are shown in the contact list
+   1. Prerequisites: Multiple persons exist in the contact list. List all persons using the `list` command. After executing the `list` command, the full details of the first person in the list are automatically displayed.
+
+   2. Test case: `view 1`<br>
+      Expected: The full details of the first person in the currently displayed list are still displayed. A status message is shown to indicate that the user is already viewing the first contact’s full details.
+
+   3. Test case: `view 2`<br>
+      Expected: The full details of the second person in the currently displayed list are displayed. A status message is shown to indicate that the user is now viewing the second contact’s full details.
+
+   4. Test case: `view 0`<br>
+      Expected: Error details indicating that the index cannot be zero are shown in the status message. The full details of the last viewed contact are still displayed (following the sequence of test cases strictly, this refers to the second person in the list).
 
 ### Saving data
 
