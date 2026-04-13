@@ -47,7 +47,7 @@ public class PersonCard extends UiPart<Region> {
     private VBox fieldsContainer;
 
     @FXML
-    private FlowPane tags;
+    private HBox tags;
 
     @FXML
     private ScrollPane tutInfosScrollPane;
@@ -83,8 +83,11 @@ public class PersonCard extends UiPart<Region> {
                                 new TutInfoField(tutInfo.getCourseCode(), tutInfo.getTutorialCode()).getRoot()));
 
         // Displays tags in natural alphanumeric order (case-insensitive, numbers sorted numerically)
-        person.getSortedTags().forEach(tag ->
-            tags.getChildren().add(new Label(tag.getTagName())));
+        person.getSortedTags().forEach(tag -> {
+            Label tagName = new Label(tag.getTagName());
+            tagName.setMinWidth(Region.USE_PREF_SIZE);
+            tags.getChildren().add(tagName);
+        });
     }
 
     /**
