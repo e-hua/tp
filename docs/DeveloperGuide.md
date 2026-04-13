@@ -39,7 +39,7 @@ Given below is a quick overview of main components and how they interact with ea
 
 **Main components of the architecture**
 
-**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
+**`Main`** (consisting of classes [`Main`](https://github.com/AY2526S2-CS2103T-T10-4/tp/blob/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/AY2526S2-CS2103T-T10-4/tp/blob/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
 
 - At app launch, it initialises the other components in the correct sequence, and connects them up with each other.
 - At shut down, it shuts down the other components and invokes cleanup methods where necessary.
@@ -72,7 +72,7 @@ The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
+The **API** of this component is specified in [`Ui.java`](https://github.com/AY2526S2-CS2103T-T10-4/tp/blob/master/src/main/java/seedu/address/ui/Ui.java)
 
 ![Structure of the UI Component](images/UiClassDiagram.png)
 
@@ -89,7 +89,7 @@ The `UI` component,
 
 ### Logic component
 
-**API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+**API** : [`Logic.java`](https://github.com/AY2526S2-CS2103T-T10-4/tp/blob/master/src/main/java/seedu/address/logic/Logic.java)
 
 Here's a (partial) class diagram of the `Logic` component:
 
@@ -121,7 +121,7 @@ How the parsing works:
 
 ### Model component
 
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+**API** : [`Model.java`](https://github.com/AY2526S2-CS2103T-T10-4/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
 <img src="images/ModelClassDiagram.png" width="450" />
 
@@ -136,7 +136,7 @@ The `Model` component,
 
 ### Storage component
 
-**API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+**API** : [`Storage.java`](https://github.com/AY2526S2-CS2103T-T10-4/tp/blob/master/src/main/java/seedu/address/storage/Storage.java)
 
 <img src="images/StorageClassDiagram.png" width="550" />
 
@@ -181,7 +181,7 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 * is reasonably comfortable using CLI apps
 
 **Value proposition**:
-This product aims to streamline communication from TAs‘ to their students, other TAs, teaching staff,and professors. It achieves this by organising contacts into courses, tutorial groups and tags. It supports custom contact categories (e.g., Telegram handles), and more searching functionality (e.g., by groups and/or by email etc.). It also makes contacts storing more flexible by only making names mandatory. 
+This product aims to streamline communication from TAs to their students, other TAs, teaching staff, and professors. It achieves this by organising contacts into courses, tutorial groups and tags. It supports custom contact categories (e.g., Telegram handles), and more searching functionality (e.g., by groups and/or by email etc.). It also makes contacts storing more flexible by only making names and email addresses mandatory. 
 
 ### User stories
 
@@ -218,8 +218,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-- 2a. No contacts exist.
-  - 2a1. TAConnect displays an empty state message.
+- 1a. No contacts exist.
+  - 1a1. TAConnect displays an empty state message.
 
     Use case ends.
 
@@ -237,13 +237,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-- 1a. TAConnect detects invalid input.
-  - 1a1. TAConnect informs TA of invalid input and displays the correct format with an example.
+- 2a. TAConnect detects invalid input.
+  - 2a1. TAConnect informs TA of invalid input and displays the correct format with an example.
 
     Use case ends.
 
-- 2a. TAConnect detects duplicate contact (i.e. new contact to add has one or more of the same following fields as an existing contact: email, Telegram handle, phone number)
-  - 2a1. TAConnect informs TA that a contact with the same email, phone number, or Telegram handle already exists.
+- 2b. TAConnect detects duplicate contact (i.e. new contact to add has one or more of the same following fields as an existing contact: email, Telegram handle, phone number)
+  - 2b1. TAConnect informs TA that a contact with the same email, phone number, or Telegram handle already exists.
 
     Use case ends.
 
@@ -256,19 +256,20 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1. TA requests to delete a specific contact.
-2. TAConnect deletes the contact, displays a success message, and shows the updated contact list.
+2. TAConnect validates the input.
+3. TAConnect deletes the contact, displays a success message, and shows the updated contact list.
 
    Use case ends.
 
 **Extensions**
 
-- 1a. TAConnect detects an invalid or out-of-range contact index.
-  - 1a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
+- 2a. TAConnect detects an invalid or out-of-range contact index.
+  - 2a1. TAConnect informs TA of the invalid index and displays the correct format with an example.
 
     Use case ends.
 
-- 1b. TAConnect detects other invalid input.
-  - 1b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
+- 2b. TAConnect detects other invalid input.
+  - 2b1. TAConnect informs TA of the invalid input and displays the correct format with an example.
 
     Use case ends.
 
@@ -303,7 +304,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-<ins>**Use case: UC05 - Search/Filter Contacts**<ins>
+<ins>**Use case: UC05 - Search/Filter Contacts**</ins>
 
 **Preconditions:** TA has at least one contact in their list.
 
@@ -333,7 +334,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
-<ins>**Use case: UC06 - View A Contact**<ins>
+<ins>**Use case: UC06 - View A Contact**</ins>
 
 **Preconditions:** TA has at least one contact in their list.
 
@@ -358,7 +359,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
-<ins>**Use case: UC07 - Enroll A Student**<ins>
+<ins>**Use case: UC07 - Enroll A Student**</ins>
 
 **Preconditions:** TA has at least one contact in their list.
 
@@ -389,7 +390,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
-<ins>**Use case: UC08 - Unenroll A Student**<ins>
+<ins>**Use case: UC08 - Unenroll A Student**</ins>
 
 **Preconditions:** TA has at least one contact in their list.
 
@@ -420,7 +421,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
-<ins>**Use case: UC09 - Mark Attendance**<ins>
+<ins>**Use case: UC09 - Mark Attendance**</ins>
 
 **Preconditions:** TA has at least one contact in their list.
 
@@ -451,7 +452,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
-<ins>**Use case: UC10 - Unmark Attendance**<ins>
+<ins>**Use case: UC10 - Unmark Attendance**</ins>
 
 **Preconditions:** TA has at least one contact in their list.
 
@@ -621,7 +622,7 @@ testers are expected to do more *exploratory* testing.
    1. Test case: Delete the `addressbook.json` file from `[JAR file location]/data/` if present. Launch the application.<br>
       Expected:
       - The application detects that the data file is missing and launches without any crashes.
-      - A default sample contact list containing 6 persons is automatically loaded.
+      - A default sample contact list containing 7 persons is automatically loaded.
 
 2. Dealing with corrupted data files
    1. Prerequisites: A save file exists at `[JAR file location]/data/addressbook.json`.
