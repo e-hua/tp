@@ -616,6 +616,34 @@ testers are expected to do more *exploratory* testing.
     2. Test case: `unenroll 1 c/CS2103T`<br>
        Expected: The first person is successfully unenrolled from the course `CS2103T`. The status message shows the student details with the updated course enrollment.
 
+### Marking attendance
+
+1. Marking attendance for a student in a course
+
+    1. Prerequisites: 
+        - At least one person exists in the contact list. Ensure that the student at index 1 is currently enrolled in CS2103T. 
+        - If the student is not enrolled in CS2103T, use the `enroll 1 c/CS2103T tut/T01` command before proceeding.
+    
+    2. Test case: `attend 1 c/CS2103T w/3`<br>
+       Expected: The attendance for Week 3 of CS2103T is successfully marked for the student at index 1. A status message is shown indicating that attendance for Week 3 has been marked.
+    
+    3. Test case: `attend 1 c/CS2103T w/0`<br>
+       Expected: Error details indicating that the week must be between 1 and 13 are shown in the status message. No attendance is marked.
+
+### Unmarking attendance
+
+1. Unmarking attendance for a student in a course
+
+    1. Prerequisites: 
+        - At least one person exists in the contact list. Ensure that the student at index 1 is currently enrolled in CS2103T. 
+        - If the student is not enrolled in CS2103T, use the `enroll 1 c/CS2103T tut/T01` command before proceeding.
+    
+    2. Test case: `unattend 1 c/CS2103T w/3`<br>
+       Expected: The attendance for Week 3 of CS2103T is successfully unmarked for the student at index 1. A status message is shown indicating that attendance for Week 3 has been unmarked.
+    
+    3. Test case: `unattend 1 c/CS2103T w/0`<br>
+       Expected: Error details indicating that the week must be between 1 and 13 are shown in the status message. No attendance is unmarked.
+
 ### Unsetting a person's field
 
 1. Unsetting an optional field of a person
@@ -648,6 +676,20 @@ testers are expected to do more *exploratory* testing.
 
     3. Test case: `unset 1 p/98765432`<br>
        Expected: No changes are made. Error message indicating that `unset` only accepts a field prefix with no value is shown.
+
+### Viewing a person
+
+1. Viewing a person’s full details while all persons are shown in the contact list
+   1. Prerequisites: Multiple persons exist in the contact list. List all persons using the `list` command. After executing the `list` command, the full details of the first person in the list are automatically displayed.
+
+   2. Test case: `view 1`<br>
+      Expected: The full details of the first person in the currently displayed list are still displayed. A status message is shown to indicate that the user is already viewing the first contact’s full details.
+
+   3. Test case: `view 2`<br>
+      Expected: The full details of the second person in the currently displayed list are displayed. A status message is shown to indicate that the user is now viewing the second contact’s full details.
+
+   4. Test case: `view 0`<br>
+      Expected: Error details indicating that the index cannot be zero are shown in the status message. The full details of the last viewed contact are still displayed (following the sequence of test cases strictly, this refers to the second person in the list).
 
 ### Saving data
 
