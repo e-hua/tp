@@ -528,6 +528,8 @@ Team size: `5`
 
 7. **Improve error message for missing spaces before prefixes:** Currently, when users omit spaces before command prefixes, the input may be incorrectly parsed as a single value, leading to misleading error messages. For example, in `add n/John Doe e/johndoe@example.com p/12345678tg/@johnDoe`, the system will treat `12345678tg/@johnDoe` as a single phone number instead of detecting the missing space before the `tg/` prefix. We plan to provide a specific error message indicating the formatting issue (e.g. missing space before the next prefix).<br>At the same time, the parsing logic must avoid incorrectly treating prefix-like patterns within valid field inputs (e.g. `a/Blk 123B #12-34n/2`) as actual command prefixes, as these are part of valid user input rather than command structure. This ensures correct detection of invalid prefix formatting while preserving flexibility in free-text fields instead of blocking them overzealously.
 
+8. **Remove fixed character limit for tags:** Currently, the tag inputs are restricted to a maximum length of 20 characters, which may unnecessarily limit user flexibility. We plan to remove this fixed character limit to allow longer tag inputs. The UI will be adjusted to ensure longer tags are displayed in a readable manner without affecting the overall layout of the application.
+
 ## **Appendix: Instructions for manual testing**
 
 Given below are instructions to test the app manually.
